@@ -12,7 +12,7 @@
     "
   >
     <div class="flex items-center">
-      <router-link to="Home" class="flex">
+      <router-link to="/home" class="flex">
         <img
           src="../../../assets/logo_transparent.png"
           alt="Adriantfy"
