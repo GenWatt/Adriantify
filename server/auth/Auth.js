@@ -14,12 +14,7 @@ class Auth {
     }
 
     static createToken(data, type = "access") {
-        let secretKey = null
-        const filename = `${type}Secret.txt`
-
-        if (isFileExist(filename)) {
-            secretKey = fs.readFileSync(filename)
-        }
+        const secretKey = type === 'access' ? process.env.ACCESS_SECRET : process.env.REFRESH_SECRET
 
         if (!secretKey) throw new Error("Secret key is undefined")
 
