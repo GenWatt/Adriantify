@@ -2,7 +2,7 @@
   <Modal class="text-text-primary" :isOpen="props.isOpen" @close="handleClose">
     <template #header>
       <Header class="text-left flex">
-        Add songs to playlist:
+        Add to playlist:
         <Text class="text-secondary ml-1" :type="'title'">{{ playlistData.selectedPlaylist?.title }}</Text>
       </Header>
     </template>

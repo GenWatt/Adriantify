@@ -4,7 +4,6 @@ const ObjectId = require('mongoose').Types.ObjectId
 const router = express.Router()
 const Users = require("../models/users")
 const jwt = require("jsonwebtoken")
-const fs = require('fs')
 const createUserData = require("../utils/createUserData")
 
 router.post("/refreshToken/:id", async(req, res, next) => {
@@ -13,7 +12,7 @@ router.post("/refreshToken/:id", async(req, res, next) => {
     if (ObjectId.isValid(userId)) {
         const user = await Users.findOne({ _id: userId }, { refreshToken: 1 })
         if (user && user.refreshToken) {
-            const key = fs.readFileSync('refreshSecret.txt')
+            const key = process.env.REFRESH_SECRET
 
             jwt.verify(user.refreshToken, key, (err, data) => {
                 if (err || !data || !data.user) return next({ code: 403, data: { message: 'Refresh token expired or is not valid' } })

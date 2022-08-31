@@ -24,11 +24,6 @@ interface PlaylistState {
   playlists: Playlist[]
   selectedPlaylistId: string
   selectedPlaylist: Playlist | null
-  isLoading: boolean
-  isMorePlaylists: boolean
-  limit: number
-  skip: number
-  scrollMargin: number
 }
 
 export const usePlaylist = defineStore({
@@ -37,13 +32,8 @@ export const usePlaylist = defineStore({
     ({
       myPlaylists: [],
       playlists: [],
-      limit: 9,
-      skip: 0,
       selectedPlaylistId: '',
       selectedPlaylist: null,
-      isLoading: false,
-      isMorePlaylists: true,
-      scrollMargin: 100,
     } as PlaylistState),
   actions: {
     addPlaylists(playlists: Playlist[]) {
@@ -55,20 +45,17 @@ export const usePlaylist = defineStore({
     },
     async getMyPlaylists() {
       const { callApi } = useAuthFetch()
-      this.isLoading = true
       const res = await callApi<Playlist[]>('GET', '/playlist/my')
 
       if (axios.isAxiosError(res)) {
         return
       } else {
         if (!res.data) return
-        this.isLoading = false
         this.myPlaylists = res.data
       }
     },
     async getPlaylist(id: string) {
       const { callApi } = useAuthFetch()
-      this.isLoading = true
       if (this.getPlaylisById(id)) return
       const playlistData = await callApi<ApiResponse<Playlist>>('GET', '/playlist/' + id)
 
@@ -76,7 +63,6 @@ export const usePlaylist = defineStore({
       } else {
         if (playlistData.data.data) this.playlists = [...this.playlists, playlistData.data.data]
       }
-      this.isLoading = false
     },
     getPlaylisById(id: string) {
       return this.playlists.find((playlist) => playlist._id === id) || null
@@ -109,6 +95,12 @@ export const usePlaylist = defineStore({
     removePlaylist(id: string) {
       this.myPlaylists = this.myPlaylists.filter((playlist) => playlist._id !== id)
       this.playlists = this.playlists.filter((playlist) => playlist._id !== id)
+    },
+    reset() {
+      this.playlists = []
+      this.myPlaylists = []
+      this.selectedPlaylist = null
+      this.selectedPlaylistId = ''
     },
   },
 })

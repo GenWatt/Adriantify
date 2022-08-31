@@ -1,11 +1,9 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import Home from '../views/Home.vue'
 import User from '../views/User.vue'
 import Settings from '../views/Settings.vue'
 import Songs from '../views/Songs.vue'
 import Playlist from '../views/Playlist.vue'
 import History from '../views/History.vue'
-import Library from '../views/Library.vue'
 import Song from '../views/Song.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
@@ -18,12 +16,6 @@ const routes = [
     name: 'Admin',
     component: Admin,
     meta: { roles: ['admin'] },
-  },
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    meta: { auth: true },
   },
   {
     path: '/register',
@@ -56,13 +48,7 @@ const routes = [
     meta: { transition: 'slide', auth: true },
   },
   {
-    path: '/library',
-    name: 'Library',
-    component: Library,
-    meta: { transition: 'slide', auth: true },
-  },
-  {
-    path: '/playlist',
+    path: '/playlists',
     name: 'Playlist',
     component: Playlist,
     meta: { transition: 'slide', auth: true },
@@ -80,7 +66,7 @@ const routes = [
     meta: { transition: 'slide', auth: true, hideBar: true },
   },
   {
-    path: '/playlist/:id',
+    path: '/playlists/:id',
     name: 'PlaylistItem',
     component: PlaylistItem,
     meta: { transition: 'slide', auth: true },

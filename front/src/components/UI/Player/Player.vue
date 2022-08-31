@@ -1,6 +1,6 @@
 <template>
-  <Timeline :change-route="true" />
-  <Controls :change-route="true" />
+  <Timeline :audio="props.audio" :change-route="true" />
+  <Controls :audio="props.audio" :volume="true" :change-route="true" />
 </template>
 
 <script lang="ts" setup>
@@ -9,7 +9,12 @@ import { useSongsData } from '../../../store/songs'
 import Controls from './Controls.vue'
 import Timeline from './Timeline.vue'
 
+interface Props {
+  audio: HTMLAudioElement
+}
+
 const songData = useSongsData()
+const props = defineProps<Props>()
 
 onMounted(() => {
   songData.play()

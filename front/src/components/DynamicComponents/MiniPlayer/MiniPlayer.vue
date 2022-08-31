@@ -14,11 +14,7 @@
     </div>
     <div class="flex grow">
       <Controls />
-      <Timeline
-        v-if="songData.currentAudio"
-        :current="songData.currentAudio.currentTime"
-        :duration="songData.currentAudio.duration"
-      />
+      <Timeline v-if="songData.currentAudio" :audio="songData.currentAudio" />
     </div>
     <XIcon @click="handleClosePlayer" class="w-5 h-5 mr-4 cursor-pointer" />
   </section>

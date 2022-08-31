@@ -7,15 +7,16 @@ let isFirstInit = true
 
 const setupRouter = () => {
   const user = useUser()
-  const songsData = useSongsData()
   const router = useRouter()
+
+  if (router.currentRoute.value.path === '') router.push({ name: 'Songs', replace: true })
+
   router.beforeEach(async (to, from, next) => {
     isFirstInit && (await user.refreshUser())
     isFirstInit = false
 
     if (to.meta.auth && to.name !== 'Login' && !user.isAuth()) {
-      user.reset()
-      songsData.reset()
+      user.resetAll()
       next({ name: 'Login', replace: true })
     } else {
       if (to.meta.roles && isArray(to.meta.roles) && to.meta.roles.includes(user.user?.role)) {

@@ -1,10 +1,10 @@
 <template>
-  <li class="p-2 flex w-3/12 flex-col hover:bg-secondary transition-colors rounded">
+  <li class="p-2 flex w-12/12 md:w-4/12 lg:w-3/12 flex-col hover:bg-secondary transition-colors rounded">
     <router-link :to="{ name: 'PlaylistItem', params: { id: props.playlist._id } }">
       <img class="w-full h-full" src="../../../assets/Nutka.webp" />
     </router-link>
     <div class="flex flex-col">
-      <Header>{{ props.playlist.title }}</Header>
+      <Header class="overflow-hidden whitespace-nowrap">{{ props.playlist.title }}</Header>
       <div class="flex justify-between items-center">
         <Text :type="'subtitle'">Created by: {{ props.playlist.user.username }}</Text>
         <TrashIcon v-if="remove" class="w-6 h-6 cursor-pointer" @click="handleRemove" />

@@ -1,13 +1,23 @@
 <template>
   <div>
-    <div class="flex justify-between">
-      <label for="song">Add audio</label>
-      <input type="file" name="song" id="song" @change="handleChange" accept=".mp4, .mp3" />
-    </div>
-    <div class="flex justify-between my-4">
-      <label for="songImage">Add song image</label>
-      <input type="file" name="songImage" id="songImage" @change="handleChange" accept=".jpg, .png, .jpeg" />
-    </div>
+    <RowBetween>
+      <FileInput
+        :label="'Add Song'"
+        :inputLabel="MusicNoteIcon"
+        name="song"
+        @change="handleChange"
+        accept=".mp4, .mp3"
+      />
+    </RowBetween>
+    <RowBetween class="mt-2">
+      <FileInput
+        :inputLabel="PhotographIcon"
+        :label="'Add song image'"
+        name="songImage"
+        @change="handleChange"
+        accept=".jpg, .png, .jpeg"
+      />
+    </RowBetween>
     <Form :schema="schema" @submit="handleSubmit" />
   </div>
 </template>
@@ -17,6 +27,9 @@ import axios from 'axios'
 import useAuthFetch from '../../Hooks/useAuthFetch'
 import { SongType, useSongsData } from '../../store/songs'
 import Form from '../UI/Form/Form.vue'
+import FileInput from '../Form/FileInput.vue'
+import { PhotographIcon, MusicNoteIcon } from '@heroicons/vue/outline'
+import RowBetween from '../UI/Spacing/RowBetween.vue'
 
 interface AddSongData {
   message: string
@@ -54,7 +67,6 @@ const handleSubmit = async (data: any) => {
   const res = await callApi<AddSongData>('POST', '/songs', { data: songData })
 
   if (!axios.isAxiosError(res) && res.data.success) {
-    console.log(res)
     songs.addSong(res.data.song)
   }
 

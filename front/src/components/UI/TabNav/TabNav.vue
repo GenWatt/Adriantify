@@ -24,9 +24,9 @@ import { useRouter } from 'vue-router'
 import SearchBar from '../../DynamicComponents/SearchBar/SearchBar.vue'
 
 const tabs: Tab[] = [
-  { name: 'Songs', id: 1, path: '/songs' },
-  { name: 'Playlists', id: 2, path: '/playlist' },
-  { name: 'History', id: 3, path: '/history' },
+  { name: 'Songs', id: 1, path: { name: 'Songs' } },
+  { name: 'Playlists', id: 2, path: { name: 'Playlist' } },
+  { name: 'History', id: 3, path: { name: 'History' } },
 ]
 
 const router = useRouter()

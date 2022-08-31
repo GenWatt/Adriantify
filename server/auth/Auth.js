@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
-const isFileExist = require('../utils/fileExist')
 const { REFRESH_TOKEN_DURATION, ACCESS_TOKEN_DURATION } = require('../config')
 
 class Auth {
@@ -32,7 +31,7 @@ class Auth {
         const token = req.headers.authorization && req.headers.authorization.split(" ")[1]
 
         if (token) {
-            const secretKey = fs.readFileSync('accessSecret.txt')
+            const secretKey = process.env.ACCESS_SECRET
             jwt.verify(token, secretKey, (err, data) => {
                 if (err || !data) {
                     return next({ code: 403, data: { message: "Unauthorized user" } })

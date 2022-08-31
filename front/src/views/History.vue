@@ -1,5 +1,5 @@
 <template>
-  <h1>History</h1>
+  <Header>History</Header>
   <ul>
     <SongItem v-for="item in historyData.history" :key="item._id" :song="item.song" />
   </ul>
@@ -12,6 +12,7 @@ import { useSongHistory } from '../store/history'
 import SongItem from '../components/UI/SongItem/SongItem.vue'
 import { useMarksStore } from '../store/marks'
 import Loader from '../components/UI/Loader/Loader.vue'
+import Header from '../components/UI/Typography/Header.vue'
 
 const historyData = useSongHistory()
 const marks = useMarksStore()

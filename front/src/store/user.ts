@@ -4,6 +4,9 @@ import useAuthFetch from '../Hooks/useAuthFetch'
 import useFetch from '../Hooks/useFetch'
 import useLocalStorage from '../Hooks/useLocalStorage'
 import router from '../router'
+import { useSongHistory } from './history'
+import { usePlaylist } from './playlist'
+import { useSongsData } from './songs'
 
 export interface UserType {
   username: string
@@ -23,7 +26,7 @@ interface UserState {
 const { callApi } = useFetch()
 const { getItem } = useLocalStorage()
 
-const iniitialState: UserType = {
+const initialState: UserType = {
   username: '',
   id: '',
   token: '',
@@ -34,7 +37,7 @@ export const useUser = defineStore({
   id: 'user',
   state: () =>
     ({
-      user: iniitialState,
+      user: initialState,
     } as UserState),
   actions: {
     isAuth() {
@@ -49,17 +52,29 @@ export const useUser = defineStore({
       return this.user && this.user.role === 'admin'
     },
 
+    resetAll() {
+      const songsData = useSongsData()
+      const playlist = usePlaylist()
+      const history = useSongHistory()
+
+      this.reset()
+      songsData.reset()
+      playlist.reset()
+      history.reset()
+    },
+
     async logout() {
       const { callApi } = useAuthFetch()
       const res = await callApi<{ data: { message: string; isAuth: boolean } }>('GET', '/logout')
 
       if (!axios.isAxiosError(res) && !res.data.data.isAuth) {
-        this.reset()
+        this.resetAll()
+        router.push({ name: 'Login', replace: true })
       }
     },
 
     reset() {
-      this.user = iniitialState
+      this.user = initialState
     },
 
     async refreshUser() {
@@ -68,7 +83,6 @@ export const useUser = defineStore({
 
       if (userId) {
         const data = await callApi<RefreshTokenData>('POST', '/refreshToken/' + userId)
-
         if (!axios.isAxiosError(data)) {
           if (data.data && data.data.newToken && data.data.user) {
             let newUser: UserType = { ...data.data.user, token: data.data.newToken }
@@ -77,7 +91,7 @@ export const useUser = defineStore({
           }
         } else {
           if (data.response?.status === 403) {
-            this.reset()
+            this.resetAll()
             router.push({ name: 'Login', replace: true })
           }
         }

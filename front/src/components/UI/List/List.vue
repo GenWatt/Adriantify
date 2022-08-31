@@ -1,15 +1,15 @@
 <template>
-  <div class="w-6/12 absolute bg-secondary p-2" id="search-list">
+  <div class="w-12/12 absolute bg-secondary" id="search-list">
     <div v-if="props.results.songs.length">
       <Header>Songs:</Header>
-      <ul>
+      <ul class="h-48 overflow-y-auto">
         <SongItem :song="item" v-for="item in props.results.songs" :key="item._id" />
       </ul>
     </div>
     <Text v-else>No results</Text>
     <div v-if="props.results.playlists.length">
       <Header>Playlists:</Header>
-      <ul class="flex flex-wrap">
+      <ul class="h-48 flex flex-wrap overflow-y-auto">
         <PlaylistItem :playlist="item" v-for="item in props.results.playlists" :key="item._id" />
       </ul>
     </div>

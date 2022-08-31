@@ -4,7 +4,7 @@
     class="flex justify-center items-center w-screen h-screen fixed top-0 left-0 bg-secondary-dark/10 cursor-pointer"
     :id="overlayId"
   >
-    <div class="w-6/12 mt-20 text-center bg-secondary-dark/50 rounded p-2 relative cursor-auto">
+    <div class="sm:w-11/12 md:w-8/12 lg:w-6/12 mt-20 text-center bg-secondary-dark/50 rounded p-2 relative cursor-auto">
       <Header :type="'h1'">
         <slot name="header" />
       </Header>

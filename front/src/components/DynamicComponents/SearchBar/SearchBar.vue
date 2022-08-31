@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-2">
+  <section class="mt-1">
     <Input
       text="Search"
       type="text"

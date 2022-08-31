@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
+import { onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AppBar from './components/UI/AppBar/AppBar.vue'
 import TabNav from './components/UI/TabNav/TabNav.vue'
@@ -11,7 +11,6 @@ import setupRouter from './router/routerGuards'
 import useDebounce from './Hooks/useDebounce'
 import { usePlaylist } from './store/playlist'
 import { useSongHistory } from './store/history'
-import MiniPlayerVue from './components/DynamicComponents/MiniPlayer/MiniPlayer.vue'
 
 const container: Ref<HTMLElement | null> = ref(null)
 const mini: Ref<HTMLElement | null> = ref(null)
@@ -28,7 +27,7 @@ watch(
   () => user.user,
   () => {
     if (!user.isAuth()) {
-      songsData.reset()
+      user.resetAll()
     }
   }
 )
@@ -52,12 +51,20 @@ const setContainerHeight = () => {
 }
 
 const handleScroll = () => {
-  if (router.currentRoute.value.name === 'Songs' && scroll.isBottomOfPage()) {
-    debounce(songsData.fetchSongs, 100)
-  } else if (router.currentRoute.value.name === 'Playlist' && scroll.isBottomOfPage()) {
-    debounce(playlist.fetchPlaylists, 100)
-  } else if (router.currentRoute.value.name === 'History' && scroll.isBottomOfPage()) {
-    debounce(history.fetchHistory, 100)
+  if (!scroll.isBottomOfPage()) return
+
+  switch (router.currentRoute.value.name) {
+    case 'Songs':
+      debounce(songsData.fetchSongs, 100)
+      break
+    case 'Playlist':
+      debounce(playlist.fetchPlaylists, 100)
+      break
+    case 'History':
+      debounce(history.fetchHistory, 100)
+      break
+    default:
+      break
   }
 }
 

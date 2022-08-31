@@ -11,7 +11,7 @@
       <img class="w-full h-full" v-else src="../assets/Nutka.webp" :alt="songsData.currentSong.title" />
     </div>
     <Text class="mt-2 mb-2 text-xl" :type="'title'">{{ songsData.currentSong.title }}</Text>
-    <Player v-if="songsData.currentSong" :song="songsData.currentSong" />
+    <Player v-if="songsData.currentAudio" :audio="songsData.currentAudio" />
   </div>
   <div v-else>
     <Text :type="'title'" class="text-center"> Upsss! Problem with loading this song :-( </Text>
@@ -34,7 +34,7 @@ const router = useRouter()
 const songsData = useSongsData()
 const historyData = useSongHistory()
 const marks = useMarksStore()
-const { fetchSong, fetchSongs } = useSongs()
+const { fetchSong } = useSongs()
 const { getFileUrl } = useUrl()
 
 const getSong = async (id: string) => {
@@ -56,6 +56,7 @@ watch(
 
 onMounted(async () => {
   const currentId = router.currentRoute.value.params.id as string
+  if (!songsData.currentAudio) songsData.createAudio()
 
   if (!songsData.songs.length) {
     await songsData.fetchSongs()

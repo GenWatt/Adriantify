@@ -28,7 +28,7 @@ import useConverter from '../../../Hooks/useCoverter'
 import { useSongsData } from '../../../store/songs'
 import Text from '../Text/Text.vue'
 
-type Props = { changeRoute?: boolean }
+type Props = { changeRoute?: ConstrainBooleanParameters; audio: HTMLAudioElement }
 
 const props = defineProps<Props>()
 
@@ -44,12 +44,11 @@ const songData = useSongsData()
 let isDrag = false
 const currentTime = ref(0)
 const duration = ref(0)
-let audio = songData.currentAudio
 
 const updateTime = () => {
-  if (!audio) return
-  currentTime.value = audio.currentTime
-  duration.value = audio.duration
+  if (!props.audio) return
+  currentTime.value = props.audio.currentTime
+  duration.value = props.audio.duration
 }
 
 const songEnded = () => {
@@ -60,18 +59,18 @@ const songEnded = () => {
 }
 
 onMounted(() => {
-  if (!audio) audio = songData.createAudio()
+  if (!props.audio) return
   updateTime()
-  audio.addEventListener('canplay', updateTime)
-  audio.addEventListener('timeupdate', updateTime)
-  audio.addEventListener('ended', songEnded)
+  props.audio.addEventListener('canplay', updateTime)
+  props.audio.addEventListener('timeupdate', updateTime)
+  props.audio.addEventListener('ended', songEnded)
 })
 
 onUnmounted(() => {
-  if (!audio) return
-  audio.removeEventListener('canplay', updateTime)
-  audio.removeEventListener('timeupdate', updateTime)
-  audio.removeEventListener('ended', songEnded)
+  if (!props.audio) return
+  props.audio.removeEventListener('canplay', updateTime)
+  props.audio.removeEventListener('timeupdate', updateTime)
+  props.audio.removeEventListener('ended', songEnded)
 })
 
 const checkBoundries = (value: number, max: number) => {
@@ -96,8 +95,8 @@ const handleDragEnd = (e: any) => {
 }
 
 const handleChange = (value: number) => {
-  if (!audio) return
-  audio.currentTime = audio.duration * (value / 100)
+  if (!props.audio) return
+  props.audio.currentTime = props.audio.duration * (value / 100)
   songData.play()
 }
 
