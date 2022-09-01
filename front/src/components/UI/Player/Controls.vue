@@ -1,6 +1,6 @@
 <template>
-  <div class="flex w-8/12 justify-center">
-    <input
+  <div class="flex w-8/12">
+    <InputRange
       class="md:w-2/12 md:block hidden"
       v-if="props.volume"
       @change="changeVolume"
@@ -37,6 +37,7 @@ import { RewindIcon } from '@heroicons/vue/outline'
 import { onMounted, ref, Ref } from 'vue'
 import useAudio from '../../../Hooks/useAudio'
 import { useSongsData } from '../../../store/songs'
+import InputRange from '../../Form/InputRange.vue'
 
 type Props = { changeRoute?: boolean; audio?: HTMLAudioElement; volume?: boolean }
 

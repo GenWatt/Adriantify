@@ -48,7 +48,6 @@ export default function useFetchMore() {
     if (axios.isAxiosError(res)) {
       marks.isLoading = false
     } else {
-      console.log(res)
       if (res.data.data) {
         if (!res.data.data.length) marks.isMoreToFetch = false
         else {
