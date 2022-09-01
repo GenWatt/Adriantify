@@ -64,6 +64,8 @@ export default function useAuthFetch() {
         if (error.response.status === 403 && !originalRequest._retry) {
           originalRequest._retry = true
           return axiosInstance(originalRequest)
+        } else if (error.response.status === 403 && originalRequest._retry) {
+          window.location.href = '/login'
         }
 
         return Promise.reject(error)
@@ -85,6 +87,7 @@ export default function useAuthFetch() {
       url,
       ...options,
       headers: { ...headers },
+      withCredentials: true,
     }
     try {
       isLoading.value = true

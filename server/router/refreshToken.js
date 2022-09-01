@@ -1,32 +1,29 @@
-const express = require("express")
-const Auth = require("../auth/Auth")
-const ObjectId = require('mongoose').Types.ObjectId
+import express from 'express'
+import Auth from '../auth/Auth.js'
+import jwt from 'jsonwebtoken'
+import createUserData from '../utils/createUserData.js'
+import { tokenCookieOptions } from '../config.js'
+import createError from '../utils/createError.js'
+
 const router = express.Router()
-const Users = require("../models/users")
-const jwt = require("jsonwebtoken")
-const createUserData = require("../utils/createUserData")
 
-router.post("/refreshToken/:id", async(req, res, next) => {
-    const userId = req.params.id
+router.post("/refreshToken", async(req, res, next) => {
+    const refreshToken = req.cookies.refreshToken
+    if (refreshToken) {
+        const key = process.env.REFRESH_SECRET
 
-    if (ObjectId.isValid(userId)) {
-        const user = await Users.findOne({ _id: userId }, { refreshToken: 1 })
-        if (user && user.refreshToken) {
-            const key = process.env.REFRESH_SECRET
+        jwt.verify(refreshToken, key, (err, data) => {
+            if (err || !data || !data.user) return next({ code: 403, data: { message: 'Refresh token expired or is not valid' } })
 
-            jwt.verify(user.refreshToken, key, (err, data) => {
-                if (err || !data || !data.user) return next({ code: 403, data: { message: 'Refresh token expired or is not valid' } })
+            const userData = createUserData(data)
+            const newToken = Auth.createToken(userData)
 
-                const userData = createUserData(data)
-
-                res.send({ newToken: Auth.createToken(userData), user: userData })
-            })
-        } else {
-            next({ code: 403, data: { message: "Refesh Token not found" } })
-        }
+            res.cookie('token', newToken, tokenCookieOptions)
+            res.send({ newToken, user: userData })
+        })
     } else {
-        next({ code: 403, data: { message: 'Unauthorized user' } })
+        next(createError({ data: { message: "Unauthorized user(wrong refresh token)" } }, 403))
     }
 })
 
-module.exports = router
+export default router

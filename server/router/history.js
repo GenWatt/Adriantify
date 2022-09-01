@@ -1,9 +1,9 @@
-const express = require('express')
-const Auth = require('../auth/Auth')
+import express from 'express'
+import Auth from '../auth/Auth.js'
+import mongoose from 'mongoose'
+import History from '../models/History.js'
+import createError from '../utils/createError.js'
 const router = express.Router()
-const mongoose = require('mongoose')
-const History = require('../models/History')
-const createError = require('../utils/createError')
 
 router.post('/history/:id', Auth.authenticate, async(req, res, next) => {
     const { id } = req.params
@@ -36,4 +36,4 @@ router.get('/history', Auth.authenticate, async(req, res, next) => {
     }
 })
 
-module.exports = router
+export default router

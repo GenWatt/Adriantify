@@ -2,7 +2,6 @@ import axios from 'axios'
 import { defineStore } from 'pinia'
 import useAuthFetch from '../Hooks/useAuthFetch'
 import useFetch from '../Hooks/useFetch'
-import useLocalStorage from '../Hooks/useLocalStorage'
 import router from '../router'
 import { useSongHistory } from './history'
 import { usePlaylist } from './playlist'
@@ -24,7 +23,6 @@ interface UserState {
   user: UserType
 }
 const { callApi } = useFetch()
-const { getItem } = useLocalStorage()
 
 const initialState: UserType = {
   username: '',
@@ -72,28 +70,23 @@ export const useUser = defineStore({
         router.push({ name: 'Login', replace: true })
       }
     },
-
     reset() {
       this.user = initialState
     },
-
     async refreshUser() {
-      const userId = this.user.id || getItem('id')
       let token = ''
 
-      if (userId) {
-        const data = await callApi<RefreshTokenData>('POST', '/refreshToken/' + userId)
-        if (!axios.isAxiosError(data)) {
-          if (data.data && data.data.newToken && data.data.user) {
-            let newUser: UserType = { ...data.data.user, token: data.data.newToken }
-            token = data.data.newToken
-            this.addUser(newUser)
-          }
-        } else {
-          if (data.response?.status === 403) {
-            this.resetAll()
-            router.push({ name: 'Login', replace: true })
-          }
+      const data = await callApi<RefreshTokenData>('POST', '/refreshToken')
+      if (!axios.isAxiosError(data)) {
+        if (data.data && data.data.newToken && data.data.user) {
+          let newUser: UserType = { ...data.data.user, token: data.data.newToken }
+          token = data.data.newToken
+          this.addUser(newUser)
+        }
+      } else {
+        if (data.response?.status === 403) {
+          this.resetAll()
+          router.push({ name: 'Login', replace: true })
         }
       }
 

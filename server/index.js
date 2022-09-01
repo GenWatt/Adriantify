@@ -1,22 +1,29 @@
-const express = require('express')
-const registerRoute = require("./router/register")
-const loginRoute = require("./router/login")
-const songsRoute = require("./router/songs")
-const playlistRoute = require("./router/playlist")
-const refreshToken = require("./router/refreshToken")
-const cors = require('cors')
-require("dotenv").config()
-const app = express()
-const mongoose = require("mongoose")
-const errorHandler = require('./utils/ErrorHandler')
-const { corsConfig } = require('./config')
-const historyRoute = require('./router/history')
+import express from 'express'
+import registerRoute from "./router/register.js"
+import loginRoute from "./router/login.js"
+import songsRoute from "./router/songs.js"
+import playlistRoute from "./router/playlist.js"
+import refreshToken from "./router/refreshToken.js"
+import cors from 'cors'
+import { config } from 'dotenv'
+import mongoose from "mongoose"
+import errorHandler from './utils/ErrorHandler.js'
+import { corsConfig } from './config.js'
+import historyRoute from './router/history.js'
+import cookieParser from 'cookie-parser'
+import migration from './migrations/renameHistorySchema.js'
 
-mongoose.connect(process.env.DATABASE_URI)
-require('./migrations/renameHistorySchema')()
-app.use(cors(corsConfig))
+const app = express()
+config()
+
+mongoose.connect(process.env.DATABASE_URI).then(() => console.log('Connected to db succesfully')).catch((err) => console.error(err))
+
+migration()
 app.use(express.json())
-    //app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use(cookieParser())
+app.use(cors(corsConfig))
+
+//app.use('/static', express.static(path.join(__dirname, 'public')))
 
 //routes
 app.use("/api", refreshToken)

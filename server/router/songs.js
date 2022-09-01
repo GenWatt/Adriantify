@@ -1,16 +1,17 @@
-const express = require("express")
-const Auth = require("../auth/Auth")
+import express from "express"
+import Auth from "../auth/Auth.js"
+import Songs from "../models/songs.js"
+import multer from "multer"
+import addFileToFolder from "../utils/addFileToFolder.js"
+import path from "path"
+import { getAudioDurationInSeconds } from 'get-audio-duration'
+import stream from "../utils/stream.js"
+import existsAndRemove from "../utils/existsAndRemove.js"
+import createError from "../utils/createError.js"
+import Playlist from "../models/Playlist.js"
+import mongoose from "mongoose"
+const ObjectId = mongoose.Types.ObjectId
 const router = express.Router()
-const Songs = require("../models/songs")
-const multer = require("multer")
-const addFileToFolder = require("../utils/addFileToFolder")
-const path = require('path')
-const { getAudioDurationInSeconds } = require('get-audio-duration')
-const stream = require("../utils/stream")
-const existsAndRemove = require("../utils/existsAndRemove")
-const createError = require("../utils/createError")
-const Playlist = require("../models/Playlist")
-const ObjectId = require('mongoose').Types.ObjectId
 
 const SONGS_FOLDER = 'songs'
 const IMAGE_FOLDER = 'songImage'
@@ -139,4 +140,4 @@ router.get('/search/songs', Auth.authenticate, async(req, res, next) => {
     }
 })
 
-module.exports = router
+export default router

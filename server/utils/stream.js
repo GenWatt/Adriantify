@@ -1,4 +1,4 @@
-const fs = require('fs')
+import fs from 'fs'
 
 function stream(res, filePath, range, chunksize, contentType) {
     if (!fs.existsSync(filePath)) return
@@ -19,4 +19,4 @@ function stream(res, filePath, range, chunksize, contentType) {
     return { rstream, size }
 }
 
-module.exports = stream
+export default stream

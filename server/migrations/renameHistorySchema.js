@@ -1,5 +1,5 @@
-const History = require("../models/History")
-const createError = require("../utils/createError")
+import History from "../models/History.js"
+import createError from "../utils/createError.js"
 
 const renameHistorySchema = async(req, res, next) => {
     try {
@@ -9,4 +9,4 @@ const renameHistorySchema = async(req, res, next) => {
     }
 }
 
-module.exports = renameHistorySchema
+export default renameHistorySchema

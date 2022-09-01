@@ -1,8 +1,10 @@
-const express = require("express")
-const Auth = require("../auth/Auth")
-const Validate = require("../auth/Validate")
+import express from 'express'
+import Auth from '../auth/Auth.js'
+import Validate from '../auth/Validate.js'
+import Users from '../models/users.js'
+import { tokenCookieOptions } from '../config.js'
+
 const router = express.Router()
-const Users = require("../models/users")
 
 router.post("/login", async(req, res, next) => {
     const { username, password } = req.body
@@ -23,9 +25,10 @@ router.post("/login", async(req, res, next) => {
                 req.user = userData
                 req.user.token = Auth.createToken(userData)
 
-                await Users.updateOne({ username: user.username }, { $set: { refreshToken: Auth.createToken(userData, 'refresh') } })
-
-                res.status(200).send({ success: true, user: req.user })
+                res.status(200)
+                    .cookie('token', req.user.token, tokenCookieOptions)
+                    .cookie('refreshToken', Auth.createToken(userData, 'refresh'), tokenCookieOptions)
+                    .send({ success: true, user: req.user })
             } else {
                 next({ code: 403, data: { message: "Wrong username/email or password" } })
             }
@@ -38,16 +41,16 @@ router.post("/login", async(req, res, next) => {
 })
 
 router.get('/auth', Auth.authenticate, (req, res, next) => {
-    res.send({ isAuth: true })
+    res.send({ isAuth: true, success: true, message: 'User is authorized' })
 })
 
 router.get('/logout', Auth.authenticate, async(req, res, next) => {
     try {
         await Users.updateOne({ _id: req.user.id }, { refreshToken: '' })
-        res.send({ data: { message: `${req.user.username} loged out`, isAuth: false } })
+        res.cookie('token', '').send({ data: { message: `${req.user.username} logged out`, isAuth: false } })
     } catch (error) {
         next({ code: 500, data: { message: error.message } })
     }
 })
 
-module.exports = router
+export default router

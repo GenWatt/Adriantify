@@ -10,7 +10,6 @@ import { Ref, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Form from '../components/UI/Form/Form.vue'
 import useFetch from '../Hooks/useFetch'
-import useLocalStorage from '../Hooks/useLocalStorage'
 import { UserType, useUser } from '../store/user'
 
 interface LoginData {
@@ -28,7 +27,6 @@ const { callApi } = useFetch()
 const router = useRouter()
 const errorMessage: Ref<string> = ref('')
 const user = useUser()
-const { setItems } = useLocalStorage()
 
 const submit = async (data: any) => {
   const res = await callApi<LoginData>('POST', '/login', { data })
@@ -36,7 +34,6 @@ const submit = async (data: any) => {
   if (!axios.isAxiosError(res)) {
     if (res.data.user) {
       user.addUser(res.data.user)
-      setItems([{ username: res.data.user.username }, { id: res.data.user.id }])
       router.push({ name: 'Songs' })
     } else {
       errorMessage.value = 'Something wrong happend'

@@ -1,10 +1,10 @@
-const express = require("express")
-const ObjectId = require('mongoose').Types.ObjectId
+import express from 'express'
+import mongoose from 'mongoose'
+import Auth from '../auth/Auth.js'
+import Playlist from '../models/Playlist.js'
+import createError from '../utils/createError.js'
 const router = express.Router()
-const Auth = require("../auth/Auth")
-const Playlist = require("../models/Playlist")
-const createError = require("../utils/createError")
-const mongoose = require("mongoose")
+const ObjectId = mongoose.Types.ObjectId
 
 router.post("/playlist", Auth.authenticate, async(req, res, next) => {
     const { title } = req.body
@@ -102,4 +102,4 @@ router.delete("/playlist/my/:id", Auth.authenticate, async(req, res, next) => {
     }
 })
 
-module.exports = router
+export default router

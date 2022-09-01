@@ -12,6 +12,7 @@ export default function useFetch() {
       method,
       url,
       ...options,
+      withCredentials: true,
     }
     try {
       const data: AxiosResponse<T> = await axios(config)

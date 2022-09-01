@@ -1,4 +1,4 @@
-const fs = require("fs")
+import fs from 'fs'
 
 function isFileExist(pathname) {
     if (fs.existsSync(pathname)) {
@@ -8,4 +8,4 @@ function isFileExist(pathname) {
     return false
 }
 
-module.exports = isFileExist
+export default isFileExist

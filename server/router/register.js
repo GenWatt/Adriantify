@@ -1,8 +1,8 @@
-const express = require("express")
-const Auth = require("../auth/Auth")
-const Validate = require("../auth/Validate")
+import express from 'express'
+import Auth from '../auth/Auth.js'
+import Validate from '../auth/Validate.js'
+import Users from '../models/users.js'
 const router = express.Router()
-const Users = require("../models/users")
 
 const rules = [
     { name: "username", rule: { min: 3, max: 6, unique: Users, require: true } },
@@ -47,4 +47,4 @@ router.post("/register/admin", async(req, res, next) => {
     }
 })
 
-module.exports = router
+export default router

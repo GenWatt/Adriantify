@@ -1,4 +1,4 @@
-const fs = require('fs')
+import fs from 'fs'
 
 function addFileToFolder(path, cb) {
     if (fs.existsSync(path)) {
@@ -9,4 +9,4 @@ function addFileToFolder(path, cb) {
     }
 }
 
-module.exports = addFileToFolder
+export default addFileToFolder

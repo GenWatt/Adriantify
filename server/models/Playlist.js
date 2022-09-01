@@ -1,5 +1,5 @@
-const mongoose = require("mongoose")
-const ObjectId = require('mongoose').Types.ObjectId
+import mongoose from "mongoose"
+const ObjectId = mongoose.Types.ObjectId
 
 const Schema = mongoose.Schema({
     title: { type: String, reqiured: true },
@@ -7,4 +7,4 @@ const Schema = mongoose.Schema({
     user: { type: ObjectId, ref: 'users', required: true }
 })
 
-module.exports = mongoose.model("playlist", Schema)
+export default mongoose.model("playlist", Schema)

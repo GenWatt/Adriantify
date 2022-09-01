@@ -1,7 +1,6 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const fs = require('fs')
-const { REFRESH_TOKEN_DURATION, ACCESS_TOKEN_DURATION } = require('../config')
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { REFRESH_TOKEN_DURATION, ACCESS_TOKEN_DURATION } from '../config.js'
 
 class Auth {
     static hash(password) {
@@ -28,7 +27,7 @@ class Auth {
     }
 
     static authenticate(req, res, next) {
-        const token = req.headers.authorization && req.headers.authorization.split(" ")[1]
+        const token = req.cookies.token
 
         if (token) {
             const secretKey = process.env.ACCESS_SECRET
@@ -48,7 +47,6 @@ class Auth {
 
     static authWithRole(roles) {
         return (req, res, next) => {
-            console.log(req.user)
             if (req.user) {
                 if (roles.includes(req.user.role)) {
                     req.correctRole = true
@@ -74,4 +72,4 @@ class Auth {
     }
 }
 
-module.exports = Auth
+export default Auth

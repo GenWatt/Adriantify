@@ -81,4 +81,4 @@ class Validate {
     getErrors = () => this.errors
 }
 
-module.exports = Validate
+export default Validate

@@ -1,6 +1,6 @@
-const fs = require('fs')
+import fs from 'fs'
 
-module.exports = function existsAndRemove(path) {
+export default function existsAndRemove(path) {
     if (fs.existsSync(path) && fs.lstatSync(path).isFile()) {
         fs.rmSync(path)
     }

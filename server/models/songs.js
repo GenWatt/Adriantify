@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
 
 const Schema = mongoose.Schema({
     title: { type: String, reqiured: true },
@@ -11,4 +11,4 @@ const Schema = mongoose.Schema({
     duration: { type: Number, required: true }
 })
 
-module.exports = mongoose.model("songs", Schema)
+export default mongoose.model("songs", Schema)
