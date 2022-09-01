@@ -83,7 +83,6 @@ onUnmounted(() => container.value?.removeEventListener('scroll', handleScroll))
     <AppBar v-if="!router.currentRoute.value.meta.hideNav" />
     <TabNav v-if="!router.currentRoute.value.meta.hideNav" />
     <NotificationsContainer />
-    <Loader />
     <router-view v-slot="{ route, Component }">
       <transition :name="route.meta.transition">
         <main
