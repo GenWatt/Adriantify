@@ -1,15 +1,17 @@
 <template>
-  <span :class="`block ${classWidth} ${classHeight} bg-secondary ${className || ''}`"> </span>
+  <span v-bind="props" :class="`block ${classes}  bg-secondary`"> </span>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
+
 interface Props {
   width?: string
   height?: string
   className?: string
 }
 
-const { width, height, className } = defineProps<Props>()
-const classWidth = width || 'w-full'
-const classHeight = height || 'h-0.5'
+const classes = computed(() => `${props.className || ''} ${props.height || 'h-0.5'} ${props.width || 'w-full'}`)
+
+const props = defineProps<Props>()
 </script>

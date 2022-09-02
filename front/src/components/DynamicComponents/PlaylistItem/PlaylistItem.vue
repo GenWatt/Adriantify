@@ -25,9 +25,10 @@ import { Playlist, usePlaylist } from '../../../store/playlist'
 import Header from '../../UI/Typography/Header.vue'
 import Text from '../../UI/Text/Text.vue'
 import { TrashIcon } from '@heroicons/vue/outline'
-import useAuthFetch from '../../../Hooks/useAuthFetch'
+import useAuthFetch, { ApiResponse } from '../../../Hooks/useAuthFetch'
 import axios from 'axios'
 import useUrl from '../../../Hooks/useUrl'
+import { NotificationTypes, useNotification } from '../../../store/notification'
 
 interface Props {
   playlist: Playlist
@@ -38,14 +39,20 @@ interface Props {
 const props = defineProps<Props>()
 const { callApi } = useAuthFetch()
 const playlistData = usePlaylist()
+const notificationStore = useNotification()
 const { getFileUrl } = useUrl()
 
 const handleRemove = async () => {
-  const res = await callApi('DELETE', '/playlist/my/' + props.playlist._id)
+  const res = await callApi<ApiResponse>('DELETE', '/playlist/my/' + props.playlist._id)
 
   if (axios.isAxiosError(res)) {
+    notificationStore.addQuickNotifaction({ type: NotificationTypes.ERROR, message: res.response?.data.message })
   } else {
     playlistData.removePlaylist(props.playlist._id)
+    notificationStore.addQuickNotifaction({
+      type: NotificationTypes.SUCCESS,
+      message: res.data.message,
+    })
   }
 }
 </script>

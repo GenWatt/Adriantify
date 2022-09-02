@@ -30,6 +30,7 @@ import Form from '../UI/Form/Form.vue'
 import FileInput from '../Form/FileInput.vue'
 import { PhotographIcon, MusicNoteIcon } from '@heroicons/vue/outline'
 import RowBetween from '../UI/Spacing/RowBetween.vue'
+import { NotificationTypes, useNotification } from '../../store/notification'
 
 interface AddSongData {
   message: string
@@ -38,14 +39,15 @@ interface AddSongData {
 }
 
 const { callApi } = useAuthFetch()
+const notificationStore = useNotification()
 let songData = new FormData()
 const songs = useSongsData()
 const schema = [
-  { type: 'text', name: 'title', label: 'Song title', required: true },
-  { type: 'text', name: 'creator', label: 'Song creator' },
-  { type: 'date', name: 'release', label: 'Song release' },
-  { type: 'text', name: 'album', label: 'Song album' },
-  { type: 'submit', name: 'submit', label: 'Submit song' },
+  { type: 'text', name: 'title', placeholder: 'Song title', required: true },
+  { type: 'text', name: 'creator', placeholder: 'Song creator' },
+  { type: 'date', name: 'release', placeholder: 'Song release' },
+  { type: 'text', name: 'album', placeholder: 'Song album' },
+  { type: 'submit', name: 'submit', placeholder: 'Submit song' },
 ]
 
 const handleChange = async (e: any) => {
@@ -68,6 +70,7 @@ const handleSubmit = async (data: any) => {
 
   if (!axios.isAxiosError(res) && res.data.success) {
     songs.addSong(res.data.song)
+    notificationStore.addQuickNotifaction({ type: NotificationTypes.SUCCESS, message: res.data.message })
   }
 
   for (let key in data) {

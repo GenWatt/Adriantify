@@ -105,7 +105,7 @@ const songHandler = (req, res, next) => {
         }
 
         Songs.create(songData)
-            .then((addedSong) => res.send({ message: 'Song' + currentSong.originalname + 'added', success: true, song: addedSong }))
+            .then((addedSong) => res.send({ message: 'Song' + currentSong.originalname + ' added', success: true, song: addedSong }))
             .catch((err) => {
                 existsAndRemove(path.join(__dirname, 'public', SONGS_FOLDER, currentSong.filename))
                 currentImage && existsAndRemove(path.join(__dirname, 'public', IMAGE_FOLDER, currentSong.filename))

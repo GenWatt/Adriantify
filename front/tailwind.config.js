@@ -19,7 +19,7 @@ module.exports = {
             'primary-lighter': '#27272a',
             'text-primary': 'white',
             'text-error': '#ff1c25',
-            'text-success': 'lightgreen',
+            'text-success': 'green',
         },
         fontFamily: {
             sans: ['Graphik', 'sans-serif'],

@@ -11,6 +11,8 @@ import setupRouter from './router/routerGuards'
 import useDebounce from './Hooks/useDebounce'
 import { usePlaylist } from './store/playlist'
 import { useSongHistory } from './store/history'
+import { NotificationTypes, useNotification } from './store/notification'
+import NotificationsContainer from './components/UI/Notification/NotificationsContainer.vue'
 
 const container: Ref<HTMLElement | null> = ref(null)
 const mini: Ref<HTMLElement | null> = ref(null)
@@ -69,6 +71,12 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
+  const notificationStore = useNotification()
+  notificationStore.addNotifications([
+    { message: 'Dzien dobry panie kobry', seen: true, hide: false, type: NotificationTypes.ERROR },
+    { message: 'Dzien dobry panie kobry', seen: false, hide: false, type: NotificationTypes.SUCCESS },
+    { message: 'Dzien dobry panie kobry', seen: true, hide: false, type: NotificationTypes.INFO },
+  ])
   setupRouter()
   setContainerHeight()
   songsData.miniPlayerSetup()

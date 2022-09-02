@@ -15,6 +15,7 @@ import useAuthFetch from '../../../Hooks/useAuthFetch'
 import { Playlist, usePlaylist } from '../../../store/playlist'
 import axios from 'axios'
 import Form, { FromSchema } from '../Form/Form.vue'
+import { NotificationTypes, useNotification } from '../../../store/notification'
 
 interface Props {
   isOpen: boolean
@@ -42,6 +43,7 @@ const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
 const { callApi } = useAuthFetch()
 const playlistData = usePlaylist()
+const notificationStore = useNotification()
 let playlistFormData = new FormData()
 
 const handleClose = () => emits('close')
@@ -52,8 +54,11 @@ const createPlaylist = async (data: CreatePlaylist) => {
   const res = await callApi<AddPlaylist>('POST', '/playlist', { data: playlistFormData })
 
   if (axios.isAxiosError(res)) {
+    res.response &&
+      notificationStore.addQuickNotifaction({ type: NotificationTypes.ERROR, message: res.response?.data.message })
   } else {
     playlistData.addPlaylist(res.data.playlist)
+    notificationStore.addQuickNotifaction({ type: NotificationTypes.SUCCESS, message: res.data.message })
   }
   playlistFormData = new FormData()
 }

@@ -39,7 +39,7 @@ const playlistHandler = async(req, res, next) => {
         }
         try {
             const addedPlatlist = await (await Playlist.create(playlist)).populate('user', 'username')
-            res.send({ success: true, message: 'Playlist created', playlist: addedPlatlist })
+            res.send({ success: true, message: `Playlist "${addedPlatlist.title}" created`, playlist: addedPlatlist })
         } catch (error) {
             currentImage && existsAndRemove(path.join(__dirname, 'public', PLAYLIST_IMAGE_FOLDER, currentImage.filename))
             next(createError({ message: err.message }))
@@ -137,7 +137,7 @@ router.delete("/playlist/my/:id", Auth.authenticate, async(req, res, next) => {
 
     try {
         await Playlist.deleteOne({ user: req.user.id, _id: id })
-        res.send({ message: 'Playlist deleted', success: true })
+        res.send({ message: 'Playlist  deleted', success: true })
     } catch (error) {
         next(createError({ message: error.message }))
     }
