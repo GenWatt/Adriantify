@@ -3,33 +3,18 @@
     <template #header>Add Playlist</template>
     <template #content>
       <div class="text-white">
-        <div class="flex justify-between items-center">
-          <div>
-            <Input
-              @keyup="handleChange"
-              :text="'Playlist Title'"
-              v-model="title"
-              :id="'playlistTitle'"
-              :name="'playlistTitle'"
-            />
-          </div>
-          <Button @click="createPlaylist" class="mb-2 self-end py-1">Create Playlist</Button>
-        </div>
-        <Text class="text-text-error text-left">{{ error }}</Text>
+        <Form :schema="schema" @submit="createPlaylist" />
       </div>
     </template>
   </Modal>
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref } from 'vue'
 import Modal from '../Modal/Modal.vue'
-import Text from '../Text/Text.vue'
 import useAuthFetch from '../../../Hooks/useAuthFetch'
-import Input from '../../Form/Input.vue'
-import Button from '../Buttons/Button.vue'
 import { Playlist, usePlaylist } from '../../../store/playlist'
 import axios from 'axios'
+import Form, { FromSchema } from '../Form/Form.vue'
 
 interface Props {
   isOpen: boolean
@@ -45,26 +30,31 @@ interface AddPlaylist {
   message: string
 }
 
+type CreatePlaylist = { playlistTitle: string; playlistImage: FileList | '' }
+
+const schema: FromSchema[] = [
+  { type: 'text', name: 'playlistTitle', placeholder: 'Playlist title', required: true },
+  { type: 'file', name: 'playlistImage', placeholder: 'Playlist image', accept: '.png, .jpg, .jpeg .webp' },
+  { type: 'submit', placeholder: 'Create Playlist', name: 'submit' },
+]
+
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
-const title: Ref<string> = ref('')
-const error: Ref<string> = ref('')
 const { callApi } = useAuthFetch()
 const playlistData = usePlaylist()
+let playlistFormData = new FormData()
 
 const handleClose = () => emits('close')
 
-const handleChange = () => title.value && (error.value = '')
-
-const createPlaylist = async () => {
-  if (!title.value) return (error.value = 'Provide title')
-  const res = await callApi<AddPlaylist>('POST', '/playlist', { data: { title: title.value } })
+const createPlaylist = async (data: CreatePlaylist) => {
+  playlistFormData.append('title', data.playlistTitle)
+  data.playlistImage && data.playlistImage.length && playlistFormData.append('playlistImage', data.playlistImage[0])
+  const res = await callApi<AddPlaylist>('POST', '/playlist', { data: playlistFormData })
 
   if (axios.isAxiosError(res)) {
-    console.log(res)
   } else {
-    console.log(res)
     playlistData.addPlaylist(res.data.playlist)
   }
+  playlistFormData = new FormData()
 }
 </script>

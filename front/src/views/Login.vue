@@ -18,10 +18,10 @@ interface LoginData {
 }
 
 const schema = [
-  { type: 'text', name: 'username', id: 'user', required: true, label: 'Enter your username or e-mail' },
-  { type: 'password', name: 'password', id: 'password', required: true, label: 'Enter your password' },
-  { type: 'link', name: 'link', label: 'Do not have account? Create here.', to: { name: 'Register' } },
-  { type: 'submit', name: 'submit', id: 'submit', label: 'Submit' },
+  { type: 'text', name: 'username', id: 'user', required: true, placeholder: 'Enter your username or e-mail' },
+  { type: 'password', name: 'password', id: 'password', required: true, placeholder: 'Enter your password' },
+  { type: 'link', name: 'link', placeholder: 'Do not have account? Create here.', to: { name: 'Register' } },
+  { type: 'submit', name: 'submit', id: 'submit', placeholder: 'Submit' },
 ]
 const { callApi } = useFetch()
 const router = useRouter()

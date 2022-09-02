@@ -1,15 +1,6 @@
 <template>
   <section class="mt-1">
-    <Input
-      text="Search"
-      type="text"
-      :id="id"
-      :name="id"
-      :icon="SearchCircleIcon"
-      :value="searchText"
-      v-model="searchText"
-      @keyup="handleChange"
-    />
+    <Input placeholder="Search" type="text" :id="id" :name="id" :icon="SearchCircleIcon" @keyup="handleChange" />
     <List @close="handleCloseList" v-if="showList && results && isList" class="rounded" :results="results" />
   </section>
 </template>
@@ -37,7 +28,7 @@ interface Emits {
   (e: 'loading', isLoading: boolean): void
 }
 
-const DEBOUNCE_TIME = 300
+const DEBOUNCE_TIME = 100
 
 const { debounce } = useDebounce()
 const { callApi } = useAuthFetch()
@@ -68,6 +59,7 @@ const getSearchList = async () => {
     emits('loading', false)
   } else {
     results.value = null
+    handleCloseList()
     emits('loading', false)
     emits('results', null)
   }
@@ -75,8 +67,9 @@ const getSearchList = async () => {
 
 onMounted(() => router.afterEach(handleCloseList))
 
-const handleChange = () => {
+const handleChange = (e: any) => {
   isList.value = true
+  searchText.value = e.target.value
   debounce(getSearchList, DEBOUNCE_TIME)
 }
 </script>

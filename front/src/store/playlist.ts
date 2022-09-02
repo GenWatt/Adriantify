@@ -2,7 +2,6 @@ import axios from 'axios'
 import { defineStore } from 'pinia'
 import useAuthFetch, { ApiResponse } from '../Hooks/useAuthFetch'
 import useFetchMore, { FETCH_NAME_OPTIONS } from '../Hooks/useFetchMore'
-import useUrl, { QueryData } from '../Hooks/useUrl'
 import { SongType } from './songs'
 import { UserType } from './user'
 
@@ -11,6 +10,7 @@ export interface Playlist {
   songs: SongType[]
   _id: string
   user: UserType
+  path?: string
 }
 
 export interface PlaylistsAndSongs {
@@ -38,6 +38,9 @@ export const usePlaylist = defineStore({
   actions: {
     addPlaylists(playlists: Playlist[]) {
       this.playlists = [...this.playlists, ...playlists]
+      this.playlists = this.playlists.filter(
+        (playlist, index, self) => index === self.findIndex((item) => item._id === playlist._id)
+      )
     },
     async fetchPlaylists() {
       const { fetch } = useFetchMore()
@@ -73,6 +76,7 @@ export const usePlaylist = defineStore({
     },
     addPlaylist(playlist: Playlist) {
       this.playlists = [...this.playlists, playlist]
+      this.myPlaylists = [...this.myPlaylists, playlist]
     },
     addSongToPlaylist(playlistId: string, song: SongType) {
       this.playlists = this.playlists.map((playlist) =>

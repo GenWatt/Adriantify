@@ -118,9 +118,10 @@ router.post("/songs", Auth.authenticate, Auth.authWithRole(['admin']), (req, res
     uploadSongs.fields(songFields)(req, res, songHandler(req, res, next))
 })
 
+
 router.get('/search/songs', Auth.authenticate, async(req, res, next) => {
     const { text, playlist } = req.query
-    if (text && typeof text === 'string') {
+    if (text) {
         const searchParams = { $regex: text, $options: "i" }
         try {
             const songs = await Songs.find({ title: searchParams }).limit(10).select(['title', 'imagePath', 'songPath', 'creator'])

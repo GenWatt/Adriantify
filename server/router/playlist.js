@@ -3,20 +3,61 @@ import mongoose from 'mongoose'
 import Auth from '../auth/Auth.js'
 import Playlist from '../models/Playlist.js'
 import createError from '../utils/createError.js'
+import multer from 'multer'
+import addFileToFolder from '../utils/addFileToFolder.js'
+import path from 'path'
+import existsAndRemove from '../utils/existsAndRemove.js'
+
 const router = express.Router()
 const ObjectId = mongoose.Types.ObjectId
+const PLAYLIST_IMAGE_FOLDER = 'playlistImages'
 
-router.post("/playlist", Auth.authenticate, async(req, res, next) => {
+const playlistStorage = multer.diskStorage({
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, uniqueSuffix + '-' + file.originalname)
+    },
+    destination: (req, file, cb) => {
+        if (file.fieldname === 'playlistImage' && file.mimetype.startsWith('image')) {
+            file.staticPath = `/${PLAYLIST_IMAGE_FOLDER}/${file.filename}`
+            addFileToFolder(path.join('public', PLAYLIST_IMAGE_FOLDER), cb)
+        } else cb('Wrong file fieldname or mimetype')
+    },
+})
+const uploadPlaylist = multer({ storage: playlistStorage })
+
+const playlistHandler = async(req, res, next) => {
+    if (!req.user) return next(createError({ data: { message: 'User not authorized' } }), 403)
     const { title } = req.body
+    const currentImage = req.file ? req.file : ''
 
     if (title) {
+        const playlist = {
+            title,
+            user: req.user.id,
+            path: currentImage ? `/${PLAYLIST_IMAGE_FOLDER}/${currentImage.filename}` : currentImage
+        }
         try {
-            const addedPlatlist = await (await Playlist.create({ title, user: req.user.id })).populate('user', 'username')
+            const addedPlatlist = await (await Playlist.create(playlist)).populate('user', 'username')
             res.send({ success: true, message: 'Playlist created', playlist: addedPlatlist })
         } catch (error) {
-            next(createError({ message: error.message }))
+            currentImage && existsAndRemove(path.join(__dirname, 'public', PLAYLIST_IMAGE_FOLDER, currentImage.filename))
+            next(createError({ message: err.message }))
         }
-    } else next(createError({ message: 'Provide title' }, 401))
+    } else {
+        currentImage && existsAndRemove(path.join(__dirname, 'public', PLAYLIST_IMAGE_FOLDER, currentImage.filename))
+        next(createError({ message: 'Provide title' }, 401))
+    }
+}
+
+router.post("/playlist", Auth.authenticate, uploadPlaylist.single('playlistImage'), (req, res, next) => {
+    playlistHandler(req, res, next)
+})
+
+router.get(`/${PLAYLIST_IMAGE_FOLDER}/:filename`, (req, res, next) => {
+    res.sendFile(path.resolve(`public/${PLAYLIST_IMAGE_FOLDER}/${req.params.filename}`), (err) => {
+        if (err) next({ code: 500, data: { message: err.message } })
+    })
 })
 
 router.put("/playlist/addSong/:id", Auth.authenticate, async(req, res, next) => {

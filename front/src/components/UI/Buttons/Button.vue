@@ -1,9 +1,17 @@
 <template>
   <button
-    class="text-white bg-secondary hover:bg-secondary/80 font-medium rounded-lg text-sm px-3 py-2 focus:outline-none"
+    :class="`${props.class || ''} ${props.color ? props.color : 'bg-secondary'}`"
+    class="text-white hover:bg-secondary/80 font-medium rounded-lg text-sm px-3 py-2 focus:outline-none"
   >
     <slot />
   </button>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ButtonHTMLAttributes } from 'vue'
+interface Props extends ButtonHTMLAttributes {
+  color?: string
+}
+
+const props = defineProps<Props>()
+</script>

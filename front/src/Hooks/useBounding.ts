@@ -50,7 +50,11 @@ const useBounding = () => {
     element.value = el
   }
 
-  return { setup, getCoords, setStyle, outOfBoundries }
+  const isOverflowing = (el: Ref<HTMLElement>) => {
+    return el.value.scrollHeight > el.value.clientHeight || el.value.scrollWidth > el.value.clientWidth
+  }
+
+  return { setup, getCoords, setStyle, outOfBoundries, isOverflowing }
 }
 
 export default useBounding

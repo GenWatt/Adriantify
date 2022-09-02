@@ -3,7 +3,7 @@
     <Header>Playlist</Header>
     <div class="flex items-center">
       <PlusIcon class="w-6 h-6 cursor-pointer mr-2" title="Add Playlist" @click="handleOpenCreatePlaylist" />
-      <Button class="mr-2" @click="showMyPlaylists">My Playlists</Button>
+      <Button class="mr-2" :color="isMyPlaylistMode ? 'bg-primary' : ''" @click="showMyPlaylists">My Playlists</Button>
     </div>
   </header>
 
@@ -57,7 +57,7 @@ const loadPlaylists = () => {
 const showMyPlaylists = () => {
   if (isMyPlaylistMode.value) return loadPlaylists()
   isMyPlaylistMode.value = true
-  if (!playlistData.myPlaylists.length) playlistData.getMyPlaylists()
+  playlistData.getMyPlaylists()
 }
 
 onMounted(() => {
