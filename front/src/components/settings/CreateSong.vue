@@ -68,9 +68,12 @@ const handleSubmit = async (data: any) => {
 
   const res = await callApi<AddSongData>('POST', '/songs', { data: songData })
 
-  if (!axios.isAxiosError(res) && res.data.success) {
+  if (!axios.isAxiosError(res)) {
     songs.addSong(res.data.song)
     notificationStore.addQuickNotifaction({ type: NotificationTypes.SUCCESS, message: res.data.message })
+  } else {
+    res.response &&
+      notificationStore.addQuickNotifaction({ type: NotificationTypes.ERROR, message: res.response.data.message })
   }
 
   for (let key in data) {

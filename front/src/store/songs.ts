@@ -120,8 +120,10 @@ export const useSongsData = defineStore({
       const router = useRouter()
 
       router.afterEach(() => {
-        if (router.currentRoute.value.name !== 'Song' && this.currentSong) this.isMiniPlayer = true
-        if (router.currentRoute.value.name === 'Song') this.isMiniPlayer = false
+        if (router.currentRoute.value.name !== 'Song' && router.currentRoute.value.name !== 'User' && this.currentSong)
+          this.isMiniPlayer = true
+        if (router.currentRoute.value.name === 'Song' || router.currentRoute.value.name === 'User')
+          this.isMiniPlayer = false
       })
     },
     setMiniPlayer(open: boolean) {
