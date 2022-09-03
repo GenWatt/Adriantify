@@ -11,7 +11,7 @@ export const useMarksStore = defineStore('marks', {
   state: () =>
     ({
       skip: 0,
-      limit: 11,
+      limit: 21,
       isMoreToFetch: true,
       isLoading: false,
     } as MarkState),

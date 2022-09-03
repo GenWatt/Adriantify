@@ -1,7 +1,7 @@
 import express from 'express'
 import Auth from '../auth/Auth.js'
 import Validate from '../auth/Validate.js'
-import Users from '../models/users.js'
+import Users from '../models/User.js'
 import { tokenCookieOptions } from '../config.js'
 
 const router = express.Router()

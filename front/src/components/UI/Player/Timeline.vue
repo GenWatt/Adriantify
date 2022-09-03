@@ -26,7 +26,7 @@ import useAudio from '../../../Hooks/useAudio'
 import useBounding from '../../../Hooks/useBounding'
 import useConverter from '../../../Hooks/useCoverter'
 import { useSongsData } from '../../../store/songs'
-import Text from '../Text/Text.vue'
+import Text from '../Typography/Text.vue'
 
 type Props = { changeRoute?: ConstrainBooleanParameters; audio: HTMLAudioElement }
 

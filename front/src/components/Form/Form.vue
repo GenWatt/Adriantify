@@ -19,7 +19,7 @@
           </div>
         </template>
         <template v-else-if="item.type === 'file'">
-          <RowBetween>
+          <RowBetween class="my-2">
             <FileInput
               :clean="cleanInputs"
               v-bind="item"
@@ -43,12 +43,12 @@
 <script lang="ts" setup>
 import { InputHTMLAttributes, onMounted, ref } from 'vue'
 import FormError from './FormError.vue'
-import Input from '../../Form/Input.vue'
-import Button from '../Buttons/Button.vue'
-import FileInput from '../../Form/FileInput.vue'
+import Input from './Input.vue'
+import Button from '../UI/Buttons/Button.vue'
+import FileInput from './FileInput.vue'
 import { FolderAddIcon } from '@heroicons/vue/outline'
-import RowBetween from '../Spacing/RowBetween.vue'
-import Header from '../Typography/Header.vue'
+import RowBetween from '../UI/Spacing/RowBetween.vue'
+import Header from '../UI/Typography/Header.vue'
 
 export interface FromSchema extends InputHTMLAttributes {
   name: string

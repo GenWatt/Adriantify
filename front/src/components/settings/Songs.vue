@@ -22,7 +22,7 @@ import useScroll from '../../Hooks/useScroll'
 import { useMarksStore } from '../../store/marks'
 import { SongType, useSongsData } from '../../store/songs'
 import SongItem from '../UI/SongItem/SongItem.vue'
-import Text from '../UI/Text/Text.vue'
+import Text from '../UI/Typography/Text.vue'
 import Loader from '../UI/Loader/Loader.vue'
 
 const { fetch } = useFetchMore()

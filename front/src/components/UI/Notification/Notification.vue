@@ -13,7 +13,7 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 import { NotificationType, NotificationTypes, useNotification } from '../../../store/notification'
 import { XIcon } from '@heroicons/vue/outline'
-import Text from '../Text/Text.vue'
+import Text from '../Typography/Text.vue'
 import Line from '../Line/Line.vue'
 
 interface Props {

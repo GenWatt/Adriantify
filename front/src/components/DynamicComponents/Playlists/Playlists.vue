@@ -1,5 +1,5 @@
 <template>
-  <section v-if="!playlistData.isLoading">
+  <section>
     <div class="flex items-center my-1 overflow-x-auto">
       <div v-for="item in playlistData.playlists" :key="item._id">
         <Text
@@ -25,7 +25,6 @@
       />
     </ul>
   </section>
-  <Loader v-else />
 
   <Text class="my-2" :type="'subtitle'" v-if="!playlistData.selectedPlaylist?.songs.length"
     >This playlist is empty</Text
@@ -34,14 +33,15 @@
 
 <script lang="ts" setup>
 import { usePlaylist } from '../../../store/playlist'
-import Text from '../../UI/Text/Text.vue'
+import Text from '../../UI/Typography/Text.vue'
 import SongItem from '../../UI/SongItem/SongItem.vue'
 import { SongType } from '../../../store/songs'
 import useAuthFetch, { ApiResponse } from '../../../Hooks/useAuthFetch'
 import axios from 'axios'
-import Loader from '../../UI/Loader/Loader.vue'
+import { NotificationTypes, useNotification } from '../../../store/notification'
 
 const playlistData = usePlaylist()
+const notificationStore = useNotification()
 const { callApi } = useAuthFetch()
 
 const handleDelete = async (song: SongType) => {
@@ -50,8 +50,11 @@ const handleDelete = async (song: SongType) => {
   })
 
   if (axios.isAxiosError(res)) {
+    res.response &&
+      notificationStore.addQuickNotifaction({ message: res.response.data.message, type: NotificationTypes.ERROR })
   } else {
-    if (res.data.success) playlistData.removeSongFromPlaylist(playlistData.selectedPlaylistId, song._id)
+    playlistData.removeSongFromPlaylist(playlistData.selectedPlaylistId, song._id)
+    notificationStore.addQuickNotifaction({ message: res.data.message, type: NotificationTypes.SUCCESS })
   }
 }
 

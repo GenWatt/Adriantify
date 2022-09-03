@@ -1,23 +1,5 @@
 <template>
   <div>
-    <RowBetween>
-      <FileInput
-        :label="'Add Song'"
-        :inputLabel="MusicNoteIcon"
-        name="song"
-        @change="handleChange"
-        accept=".mp4, .mp3"
-      />
-    </RowBetween>
-    <RowBetween class="mt-2">
-      <FileInput
-        :inputLabel="PhotographIcon"
-        :label="'Add song image'"
-        name="songImage"
-        @change="handleChange"
-        accept=".jpg, .png, .jpeg"
-      />
-    </RowBetween>
     <Form :schema="schema" @submit="handleSubmit" />
   </div>
 </template>
@@ -26,11 +8,9 @@
 import axios from 'axios'
 import useAuthFetch from '../../Hooks/useAuthFetch'
 import { SongType, useSongsData } from '../../store/songs'
-import Form from '../UI/Form/Form.vue'
-import FileInput from '../Form/FileInput.vue'
-import { PhotographIcon, MusicNoteIcon } from '@heroicons/vue/outline'
-import RowBetween from '../UI/Spacing/RowBetween.vue'
+import Form from '../Form/Form.vue'
 import { NotificationTypes, useNotification } from '../../store/notification'
+import { isArray } from '@vue/shared'
 
 interface AddSongData {
   message: string
@@ -43,6 +23,8 @@ const notificationStore = useNotification()
 let songData = new FormData()
 const songs = useSongsData()
 const schema = [
+  { type: 'file', name: 'song', placeholder: 'Add song', required: true, accept: '.mp4, .mp3' },
+  { type: 'file', name: 'songImage', placeholder: 'Add song Image', accept: '.jpg, .png, .jpeg' },
   { type: 'text', name: 'title', placeholder: 'Song title', required: true },
   { type: 'text', name: 'creator', placeholder: 'Song creator' },
   { type: 'date', name: 'release', placeholder: 'Song release' },
@@ -63,7 +45,8 @@ const handleChange = async (e: any) => {
 
 const handleSubmit = async (data: any) => {
   for (let key in data) {
-    songData.append(key, data[key] || '')
+    if (isArray(data[key]) && data[key].length) songData.append(key, data[key][0])
+    else songData.append(key, data[key] || '')
   }
 
   const res = await callApi<AddSongData>('POST', '/songs', { data: songData })
@@ -76,8 +59,6 @@ const handleSubmit = async (data: any) => {
       notificationStore.addQuickNotifaction({ type: NotificationTypes.ERROR, message: res.response.data.message })
   }
 
-  for (let key in data) {
-    songData.delete(key)
-  }
+  songData = new FormData()
 }
 </script>

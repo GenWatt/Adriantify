@@ -91,7 +91,7 @@ onUnmounted(() => container.value?.removeEventListener('scroll', handleScroll))
             height: containerHeight,
           }"
           ref="container"
-          class="mx-2 overflow-y-auto"
+          class="mx-2 overflow-y-auto overflow-x-hidden"
         >
           <component :is="Component" />
         </main>

@@ -1,12 +1,12 @@
 import express from 'express'
 import Auth from '../auth/Auth.js'
 import Validate from '../auth/Validate.js'
-import Users from '../models/users.js'
+import Users from '../models/User.js'
 const router = express.Router()
 
 const rules = [
-    { name: "username", rule: { min: 3, max: 6, unique: Users, require: true } },
-    { name: "password", rule: { min: 3, max: 12, require: true } },
+    { name: "username", rule: { min: 3, max: 15, unique: Users, require: true } },
+    { name: "password", rule: { min: 3, max: 32, require: true } },
     { name: "email", rule: { min: 3, max: 32, unique: Users, require: true, email: true } }
 ]
 

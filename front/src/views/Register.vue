@@ -8,7 +8,7 @@
 import axios from 'axios'
 import { Ref, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Form, { ErrorData } from '../components/UI/Form/Form.vue'
+import Form, { ErrorData } from '../components/Form/Form.vue'
 import useFetch from '../Hooks/useFetch'
 
 interface RegisterData {
@@ -25,7 +25,7 @@ const schema = [
     id: 'password',
     required: true,
     min: 3,
-    max: 20,
+    max: 32,
     placeholder: 'Enter your password',
   },
   { type: 'link', name: 'link', placeholder: 'Already have an account? Lets go login.', to: { name: 'Login' } },

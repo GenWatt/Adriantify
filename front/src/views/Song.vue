@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { useSongsData } from '../store/songs'
-import Text from '../components/UI/Text/Text.vue'
+import Text from '../components/UI/Typography/Text.vue'
 import Player from '../components/UI/Player/Player.vue'
 import { onMounted, onUnmounted, watch } from 'vue-demi'
 import useSongs from '../Hooks/useSongs'

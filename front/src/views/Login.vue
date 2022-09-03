@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex justify-center items-center pt-8 flex-col">
+  <div class="w-full flex justify-center items-center pt-8 flex-col background-image">
     <Form title="Login" :schema="schema" @submit="submit" :headerError="errorMessage"></Form>
   </div>
 </template>
@@ -8,7 +8,7 @@
 import axios from 'axios'
 import { Ref, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Form from '../components/UI/Form/Form.vue'
+import Form from '../components/Form/Form.vue'
 import useFetch from '../Hooks/useFetch'
 import { UserType, useUser } from '../store/user'
 
@@ -34,7 +34,7 @@ const submit = async (data: any) => {
   if (!axios.isAxiosError(res)) {
     if (res.data.user) {
       user.addUser(res.data.user)
-      router.push({ name: 'Songs' })
+      router.push(router.currentRoute.value.redirectedFrom || { name: 'Songs' })
     } else {
       errorMessage.value = 'Something wrong happend'
     }

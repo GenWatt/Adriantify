@@ -33,12 +33,14 @@ import useAuthFetch, { ApiResponse } from '../Hooks/useAuthFetch'
 import axios from 'axios'
 import Header from '../components/UI/Typography/Header.vue'
 import AddSongToPlaylist from '../components/UI/Modals/AddSongToPlaylist.vue'
-import Text from '../components/UI/Text/Text.vue'
+import Text from '../components/UI/Typography/Text.vue'
+import { NotificationTypes, useNotification } from '../store/notification'
 
 const router = useRouter()
 const playlistId = router.currentRoute.value.params.id as string
 const playlistData = usePlaylist()
 const { callApi } = useAuthFetch()
+const notificationStore = useNotification()
 const isOpen = ref(false)
 
 const handleOpen = () => (isOpen.value = true)
@@ -50,8 +52,11 @@ const handleDelete = async (song: SongType) => {
   })
 
   if (axios.isAxiosError(res)) {
+    res.response &&
+      notificationStore.addQuickNotifaction({ message: res.response.data.message, type: NotificationTypes.ERROR })
   } else {
-    if (res.data.success) playlistData.removeSongFromPlaylist(playlistData.selectedPlaylistId, song._id)
+    playlistData.removeSongFromPlaylist(playlistData.selectedPlaylistId, song._id)
+    notificationStore.addQuickNotifaction({ message: res.data.message, type: NotificationTypes.SUCCESS })
   }
 }
 

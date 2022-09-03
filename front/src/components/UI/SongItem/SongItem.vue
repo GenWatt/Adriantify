@@ -52,7 +52,7 @@
 import { computed } from 'vue-demi'
 import useConverter from '../../../Hooks/useCoverter'
 import { SongType, useSongsData } from '../../../store/songs'
-import Text from '../Text/Text.vue'
+import Text from '../Typography/Text.vue'
 import { SERVER_URL } from '../../../config'
 import { PencilIcon, TrashIcon } from '@heroicons/vue/outline'
 import useAuthFetch from '../../../Hooks/useAuthFetch'

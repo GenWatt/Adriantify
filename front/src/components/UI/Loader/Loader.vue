@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import { MusicNoteIcon } from '@heroicons/vue/outline'
-import Text from '../Text/Text.vue'
+import Text from '../Typography/Text.vue'
 
 interface Props {
   message?: string

@@ -14,7 +14,7 @@ import Modal from '../Modal/Modal.vue'
 import useAuthFetch from '../../../Hooks/useAuthFetch'
 import { Playlist, usePlaylist } from '../../../store/playlist'
 import axios from 'axios'
-import Form, { FromSchema } from '../Form/Form.vue'
+import Form, { FromSchema } from '../../Form/Form.vue'
 import { NotificationTypes, useNotification } from '../../../store/notification'
 
 interface Props {

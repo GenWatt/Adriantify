@@ -36,12 +36,6 @@ const routes = [
     meta: { auth: true, hideBar: true },
   },
   {
-    path: '/settings',
-    name: 'Settings',
-    component: Settings,
-    meta: { auth: true, hideBar: true },
-  },
-  {
     path: '/songs',
     name: 'Songs',
     component: Songs,

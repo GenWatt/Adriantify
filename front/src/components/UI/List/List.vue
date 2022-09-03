@@ -20,7 +20,7 @@
 import Header from '../Typography/Header.vue'
 import SongItem from '../SongItem/SongItem.vue'
 import PlaylistItem from '../../DynamicComponents/PlaylistItem/PlaylistItem.vue'
-import Text from '../Text/Text.vue'
+import Text from '../Typography/Text.vue'
 import { PlaylistsAndSongs } from '../../../store/playlist'
 import { onMounted, onUnmounted } from 'vue'
 

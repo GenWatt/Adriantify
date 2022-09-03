@@ -13,7 +13,7 @@
 import { v4 } from 'uuid'
 import { FunctionalComponent, HTMLAttributes, InputHTMLAttributes, ref, Ref, useAttrs, VNodeProps, watch } from 'vue'
 import Button from '../UI/Buttons/Button.vue'
-import Text from '../UI/Text/Text.vue'
+import Text from '../UI/Typography/Text.vue'
 
 interface Props extends InputHTMLAttributes {
   label?: string

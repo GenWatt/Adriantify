@@ -23,12 +23,10 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors(corsConfig))
 
-//app.use('/static', express.static(path.join(__dirname, 'public')))
-
 //routes
-app.use("/api", refreshToken)
 app.use("/api", registerRoute)
 app.use("/api", loginRoute)
+app.use("/api", refreshToken)
 app.use("/api", playlistRoute)
 app.use('/api', historyRoute)
 app.use("/api", songsRoute)

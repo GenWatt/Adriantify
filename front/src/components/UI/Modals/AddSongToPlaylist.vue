@@ -28,15 +28,16 @@
 <script lang="ts" setup>
 import { ref, Ref } from 'vue'
 import Modal from '../Modal/Modal.vue'
-import Text from '../Text/Text.vue'
+import Text from '../Typography/Text.vue'
 import SearchBar from '../../DynamicComponents/SearchBar/SearchBar.vue'
-import useAuthFetch from '../../../Hooks/useAuthFetch'
+import useAuthFetch, { ApiResponse } from '../../../Hooks/useAuthFetch'
 import Loader from '../Loader/Loader.vue'
 import { SongType } from '../../../store/songs'
 import { PlaylistsAndSongs, usePlaylist } from '../../../store/playlist'
 import axios from 'axios'
 import SongItem from '../SongItem/SongItem.vue'
 import Header from '../Typography/Header.vue'
+import { NotificationTypes, useNotification } from '../../../store/notification'
 
 interface Props {
   isOpen: boolean
@@ -50,6 +51,7 @@ const songs: Ref<SongType[]> = ref([])
 const isLoading: Ref<boolean> = ref(false)
 const { callApi } = useAuthFetch()
 const playlistData = usePlaylist()
+const notificationStore = useNotification()
 const props = defineProps<Props>()
 const emits = defineEmits<Emits>()
 
@@ -61,15 +63,16 @@ const handleResults = (data: PlaylistsAndSongs) => (songs.value = data.songs)
 
 const handleAddToPlaylist = async (song: SongType) => {
   if (!playlistData.selectedPlaylist) return
-  const res = await callApi('PUT', '/playlist/addSong/' + playlistData.selectedPlaylistId, {
+  const res = await callApi<ApiResponse>('PUT', '/playlist/addSong/' + playlistData.selectedPlaylistId, {
     data: { songId: song._id },
   })
 
   if (axios.isAxiosError(res)) {
-    console.log(res)
+    res.response &&
+      notificationStore.addQuickNotifaction({ message: res.response.data.message, type: NotificationTypes.ERROR })
   } else {
-    console.log(res)
     playlistData.addSongToPlaylist(playlistData.selectedPlaylistId, song)
+    notificationStore.addQuickNotifaction({ message: res.data.message, type: NotificationTypes.SUCCESS })
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary/70 w-full backdrop-blur-xl">
+  <nav class="bg-primary/70 w-full backdrop-blur-xl">
     <ul class="flex">
       <NavLink v-for="item in tabs" :key="item.id" :to="item.path">
         <li class="p-4">
@@ -13,13 +13,13 @@
       v-if="!router.currentRoute.value.meta.hideBar"
       :search-params="[{ name: 'playlist', value: '1' }]"
     />
-  </div>
+  </nav>
 </template>
 
 <script lang="ts" setup>
 import { Tab } from './types'
 import NavLink from '../Links/NavLink.vue'
-import Text from '../Text/Text.vue'
+import Text from '../Typography/Text.vue'
 import { useRouter } from 'vue-router'
 import SearchBar from '../../DynamicComponents/SearchBar/SearchBar.vue'
 

@@ -6,7 +6,7 @@
     </header>
 
     <RowBetween>
-      <p>Logout</p>
+      <Text>Logout</Text>
       <Button @click="logout" title="Logout">
         <LogoutIcon class="w-4 h-4" />
       </Button>
@@ -21,6 +21,7 @@ import Button from '../UI/Buttons/Button.vue'
 import { useUser } from '../../store/user'
 import Line from '../UI/Line/Line.vue'
 import RowBetween from '../UI/Spacing/RowBetween.vue'
+import Text from '../UI/Typography/Text.vue'
 
 const userStore = useUser()
 

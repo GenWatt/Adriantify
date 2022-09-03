@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import { useSongsData } from '../../../store/songs'
 import Controls from '../../UI/Player/Controls.vue'
-import Text from '../../UI/Text/Text.vue'
+import Text from '../../UI/Typography/Text.vue'
 import useUrl from '../../../Hooks/useUrl'
 import { XIcon } from '@heroicons/vue/outline'
 import Timeline from '../../UI/Player/Timeline.vue'
