@@ -1,5 +1,5 @@
 <template>
-  <li class="p-2 flex w-12/12 md:w-4/12 lg:w-3/12 flex-col hover:bg-secondary transition-colors rounded">
+  <li class="hover:bg-secondary transition-colors rounded">
     <router-link :to="{ name: 'PlaylistItem', params: { id: props.playlist._id } }">
       <img
         v-if="props.playlist.path"
@@ -7,13 +7,13 @@
         class="w-full"
         :src="getFileUrl(props.playlist.path)"
       />
-      <img v-else :class="props.small ? 'h-32' : 'h-48'" class="w-full" src="../../../assets/Nutka.webp" />
+      <img v-else class="w-full" src="../../../assets/Nutka.webp" />
     </router-link>
     <div class="flex flex-col">
       <Header :slide="true" class="whitespace-nowrap">{{ props.playlist.title }}</Header>
       <div class="flex justify-between items-center">
         <Text :type="'subtitle'">Created by: {{ props.playlist.user.username }}</Text>
-        <TrashIcon v-if="remove" class="w-6 h-6 cursor-pointer" @click="handleRemove" />
+        <TrashIcon v-if="props.remove" class="w-6 h-6 cursor-pointer" @click="handleRemove" />
       </div>
     </div>
   </li>

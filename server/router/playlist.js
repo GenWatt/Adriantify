@@ -2,6 +2,7 @@ import express from 'express'
 import multer from 'multer'
 import Auth from '../auth/Auth.js'
 import addFileToFolder from '../utils/addFileToFolder.js'
+import path from 'path'
 import { addSongToPlaylist, createPlaylist, getMyPlaylist, getPlaylists, getPlaylistImage, getPlaylist, deletePlaylist, deleteSongPlaylist } from '../controller/playlist.js'
 
 const router = express.Router()

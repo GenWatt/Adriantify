@@ -9,6 +9,7 @@ import createError from "../utils/createError.js"
 import Playlist from "../models/Playlist.js"
 import mongoose from "mongoose"
 import { IMAGE_FOLDER, SONGS_FOLDER } from "../router/songs.js"
+import { createSongObj } from "../utils/creators.js"
 
 const ObjectId = mongoose.Types.ObjectId
 const songsStorage = multer.diskStorage({
@@ -87,19 +88,12 @@ function songHandler(req, res, next) {
 
         const currentImage = req.files.songImage && req.files.songImage.length ? req.files.songImage[0] : ''
         const songDuration = await getAudioDurationInSeconds(currentSong.path)
-        const songData = {
-            songPath: `/${SONGS_FOLDER}/${currentSong.filename}`,
-            size: currentSong.size,
-            imagePath: currentImage ? `/${IMAGE_FOLDER}/${currentImage.filename}` : currentImage,
-            title: req.body.title,
-            album: req.body.album || '',
-            release: req.body.release || '',
-            creator: req.body.creator || '',
-            duration: songDuration
-        }
+        const imagePath = currentImage ? `/${IMAGE_FOLDER}/${currentImage.filename}` : currentImage
+        const songPath = `/${SONGS_FOLDER}/${currentSong.filename}`
+        const songData = createSongObj(req.body, songDuration, songPath, currentSong.size, imagePath)
 
         Songs.create(songData)
-            .then((addedSong) => res.send({ message: 'Song' + currentSong.originalname + ' added', success: true, song: addedSong }))
+            .then((addedSong) => res.send({ message: 'Song ' + currentSong.originalname + ' added', success: true, song: addedSong }))
             .catch((err) => {
                 existsAndRemove(path.join(__dirname, 'public', SONGS_FOLDER, currentSong.filename))
                 currentImage && existsAndRemove(path.join(__dirname, 'public', IMAGE_FOLDER, currentSong.filename))

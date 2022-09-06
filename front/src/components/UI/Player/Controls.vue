@@ -10,7 +10,7 @@
       max="1"
       step="0.01"
     />
-    <div class="flex justify-center w-8/12 h-8">
+    <div class="flex justify-between w-full h-8">
       <RewindIcon
         :class="!songData.isPrevSong && 'opacity-70'"
         class="cursor-pointer w-4/12"

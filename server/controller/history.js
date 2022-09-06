@@ -1,4 +1,3 @@
-import Auth from '../auth/Auth.js'
 import mongoose from 'mongoose'
 import History from '../models/History.js'
 import createError from '../utils/createError.js'
@@ -11,10 +10,10 @@ export async function addHistory(req, res, next) {
 
             if (!updatedHistoryItem) {
                 const historyItem = await (await History.create({ song: id })).populate('song')
-                return res.send({ item: historyItem, success: true, updated: false })
+                return res.status(201).send({ item: historyItem, success: true, updated: false })
             }
 
-            return res.send({ item: updatedHistoryItem, updated: true, success: true })
+            return res.status(201).send({ item: updatedHistoryItem, updated: true, success: true })
         } catch (error) {
             return next(createError({ data: { message: error.message } }))
         }

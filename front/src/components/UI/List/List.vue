@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen absolute bg-secondary p-2 rounded" id="search-list">
+  <div class="w-6/12 z-10 absolute bg-secondary p-2 rounded" id="search-list">
     <div v-if="props.results.songs.length">
       <Header>Songs:</Header>
       <ul class="h-48 overflow-y-auto">
@@ -9,9 +9,9 @@
     <Text class="text-center" v-else>No songs results</Text>
     <div v-if="props.results.playlists.length">
       <Header>Playlists:</Header>
-      <ul class="h-48 flex flex-wrap overflow-y-auto">
+      <PlaylistUl class="h-48 overflow-y-auto">
         <PlaylistItem :playlist="item" v-for="item in props.results.playlists" :key="item._id" :small="true" />
-      </ul>
+      </PlaylistUl>
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@ import PlaylistItem from '../../DynamicComponents/PlaylistItem/PlaylistItem.vue'
 import Text from '../Typography/Text.vue'
 import { PlaylistsAndSongs } from '../../../store/playlist'
 import { onMounted, onUnmounted } from 'vue'
+import PlaylistUl from '../Spacing/PlaylistUl.vue'
 
 interface Props {
   results: PlaylistsAndSongs

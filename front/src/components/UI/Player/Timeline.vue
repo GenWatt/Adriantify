@@ -12,6 +12,8 @@
         ref="zip"
         @dragend="handleDragEnd"
         @drag="handleDrag"
+        @touchend="handleDragEnd"
+        @touchmove="handleDrag"
         draggable="true"
         class="top-1/2 -translate-y-1/2 -translate-x-1/2 absolute w-4 h-4 bg-secondary rounded-full cursor-grab hover:bg-secondary/80"
       ></span>
@@ -84,8 +86,9 @@ const checkBoundries = (value: number, max: number) => {
 }
 
 const handleDragEnd = (e: any) => {
+  const eventX = e.changedTouches && e.changedTouches.length ? e.changedTouches[0].pageX : e.x
   const pathWidth = fullPathCoords.getCoords().width
-  const newX = e.x - fullPathCoords.getCoords().x
+  const newX = eventX - fullPathCoords.getCoords().x
   let newValue = checkBoundries(newX, pathWidth)
 
   zipCoords.setStyle('left', `${newValue}px`)
@@ -101,12 +104,13 @@ const handleChange = (value: number) => {
 }
 
 const handleDrag = (e: any) => {
+  const eventX = e.changedTouches && e.changedTouches.length ? e.changedTouches[0].pageX : e.x
   const path = fullPathCoords.getCoords()
   const coordsWithPrediction = Object.assign({}, zipCoords.getCoords())
 
-  coordsWithPrediction.x = e.x
+  coordsWithPrediction.x = eventX
 
-  const newX = e.x - path.x
+  const newX = eventX - path.x
   pathCoords.setStyle('width', `${checkBoundries(newX, path.width)}px`)
   zipCoords.setStyle('left', `${checkBoundries(newX, path.width)}px`)
   isDrag = true

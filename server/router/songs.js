@@ -10,13 +10,13 @@ router.get("/songs", Auth.authenticate, getSongs)
 
 router.get("/song/:id", Auth.authenticate, getSong)
 
-router.delete("/songs/:id", Auth.authWithRole(['admin']), deleteSong)
+router.delete("/songs/:id", Auth.authenticate, Auth.authWithRole(['admin']), deleteSong)
 
 router.get(`/${SONGS_FOLDER}/:filename/`, getSongAudio)
 
 router.get(`/${IMAGE_FOLDER}/:filename`, getSongImage)
 
-router.post("/songs", Auth.authWithRole(['admin']), createSong)
+router.post("/songs", Auth.authenticate, Auth.authWithRole(['admin']), createSong)
 
 router.get('/search/songs', Auth.authenticate, searchSong)
 

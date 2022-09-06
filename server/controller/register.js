@@ -1,6 +1,7 @@
 import Auth from '../auth/Auth.js'
 import Validate from '../auth/Validate.js'
 import Users from '../models/User.js'
+import { createUser } from '../utils/creators.js'
 
 const rules = [
     { name: "username", rule: { min: 3, max: 15, unique: Users, require: true } },
@@ -9,22 +10,14 @@ const rules = [
 ]
 
 export async function register(req, res, next) {
-    const { username, password, email } = req.body
-
     try {
-        const user = {
-            username,
-            password,
-            email,
-            refreshToken: null,
-            role: 'user'
-        }
+        const user = createUser(req.body)
         const validate = new Validate(user, rules)
 
         if (await validate.isValid()) {
             user.password = await Auth.hash(user.password)
             await Users.create(user)
-            res.send({ validateErrors: [] })
+            res.status(201).send({ validateErrors: [] })
         } else {
             next({ code: 403, data: { validateErrors: validate.getErrors() } })
         }
@@ -34,7 +27,7 @@ export async function register(req, res, next) {
 }
 
 export async function registerAdmin(req, res, next) {
-    const admin = { username: 'admin', password: await Auth.hash('admin'), role: 'admin', email: 'admin@gmail.com', refreshToken: null }
+    const admin = { username: 'admin', password: await Auth.hash('admin'), role: 'admin', email: 'admin@gmail.com' }
 
     try {
         await Users.create(admin)

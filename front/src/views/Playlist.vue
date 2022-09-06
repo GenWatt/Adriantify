@@ -12,9 +12,9 @@
   </teleport>
 
   <article class="mt-2" aria-label="Playlist container">
-    <ul class="flex flex-wrap" v-if="!isMyPlaylistMode">
+    <PlaylistUl v-if="!isMyPlaylistMode">
       <PlaylistItem v-for="item in playlistData.playlists" :key="item._id" :playlist="item" />
-    </ul>
+    </PlaylistUl>
 
     <ul class="flex flex-wrap overflow-y-auto" v-if="isMyPlaylistMode">
       <PlaylistItem
@@ -38,6 +38,7 @@ import Header from '../components/UI/Typography/Header.vue'
 import Loader from '../components/UI/Loader/Loader.vue'
 import { useMarksStore } from '../store/marks'
 import Button from '../components/UI/Buttons/Button.vue'
+import PlaylistUl from '../components/UI/Spacing/PlaylistUl.vue'
 
 const playlistData = usePlaylist()
 const marks = useMarksStore()

@@ -4,23 +4,21 @@ import createError from '../utils/createError.js'
 import path from 'path'
 import existsAndRemove from '../utils/existsAndRemove.js'
 import { PLAYLIST_IMAGE_FOLDER } from '../router/playlist.js'
+import { createPlaylistObj } from '../utils/creators.js'
 
 const ObjectId = mongoose.Types.ObjectId
 
 async function playlistHandler(req, res, next) {
     if (!req.user) return next(createError({ data: { message: 'User not authorized' } }), 403)
     const { title } = req.body
-    const currentImage = req.file ? req.file : ''
+    const currentImage = req.file ? `/${PLAYLIST_IMAGE_FOLDER}/${req.file.filename}` : ''
 
     if (title) {
-        const playlist = {
-            title,
-            user: req.user.id,
-            path: currentImage ? `/${PLAYLIST_IMAGE_FOLDER}/${currentImage.filename}` : currentImage
-        }
+        const playlist = createPlaylistObj(title, req.user.id, currentImage)
+
         try {
             const addedPlatlist = await (await Playlist.create(playlist)).populate('user', 'username')
-            res.send({ success: true, message: `Playlist "${addedPlatlist.title}" created`, playlist: addedPlatlist })
+            res.status(201).send({ success: true, message: `Playlist "${addedPlatlist.title}" created`, playlist: addedPlatlist })
         } catch (error) {
             currentImage && existsAndRemove(path.join(__dirname, 'public', PLAYLIST_IMAGE_FOLDER, currentImage.filename))
             next(createError({ message: err.message }))
