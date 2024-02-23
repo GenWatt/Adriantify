@@ -27,45 +27,45 @@
 
 ### Register your account
 
-![Register screen](.\assets\register.png)
+![Register screen](./assets/register.png)
 
 ### Login to app
 
-![Login screen](.\assets\login.png)
+![Login screen](./assets/login.png)
 
 ### Listen to the song
 
-![Listen to song screen](.\assets\listen.png)
+![Listen to song screen](./assets/listen.png)
 
 ### Listen and control the song everywhere in the app
 
-![Listen to song everywhere](.\assets\listen-everywhere.png)
+![Listen to song everywhere](./assets/listen-everywhere.png)
 
 ### Search for the song or playlist
 
-![Search song](.\assets\search.png)
+![Search song](./assets/search.png)
 
 ### Discover playlists
 
-![Playlists](.\assets\playlist.png)
+![Playlists](./assets/playlist.png)
 
 ### Filter your own playlists
 
-![Playlists-my](.\assets\playlist-my.png)
+![Playlists-my](./assets/playlist-my.png)
 
 ### Create your playlist
 
-![Create playlist](.\assets\create-playlist.png)
+![Create playlist](./assets/create-playlist.png)
 
 ### Manage your history
 
-![History](.\assets\history.png)
+![History](./assets/history.png)
 
 ### Logout action
 
-![Logout](.\assets\logout.png)
+![Logout](./assets/logout.png)
 
 ### Login as admin
 
-![Admin](.\assets\admin.png)
+![Admin](./assets/admin.png)
 
