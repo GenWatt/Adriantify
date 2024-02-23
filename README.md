@@ -1,6 +1,6 @@
 # Adriantify - New music app
 
-![App image](.\assets\Adriantify-songs.png)
+![App image](./assets/Adriantify-songs.png)
 
 ## Run app
 
