@@ -5,7 +5,10 @@
     :id="overlayId"
   >
     <div class="sm:w-11/12 md:w-8/12 lg:w-6/12 mt-20 text-center bg-secondary-dark/50 rounded p-2 relative cursor-auto">
-      <Header :type="'h1'">
+      <CircleButton :class="'absolute right-0 w-6 h-6'"  @click="emits('close')" >
+        <XIcon class="w-6 h-6" />
+      </CircleButton>
+      <Header :class="'mt-6'" :type="'h1'">
         <slot name="header" />
       </Header>
       <section>
@@ -19,7 +22,9 @@
 </template>
 
 <script lang="ts" setup>
+import CircleButton from '../Buttons/CircleButton.vue'
 import Header from '../Typography/Header.vue'
+import { XIcon } from '@heroicons/vue/outline'
 
 interface Emits {
   (e: 'close'): void

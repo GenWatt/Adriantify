@@ -1,5 +1,5 @@
 <template>
-  <header class="flex justify-between items-center">
+  <header class="flex justify-between items-center mt-2">
     <Header>Playlist</Header>
     <div class="flex items-center">
       <PlusIcon class="w-6 h-6 cursor-pointer mr-2" title="Add Playlist" @click="handleOpenCreatePlaylist" />

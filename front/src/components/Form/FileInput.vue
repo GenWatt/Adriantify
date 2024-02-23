@@ -1,12 +1,21 @@
 <template>
-  <label v-if="props.label" class="cursor-pointer" :for="id">{{ props.label }}</label>
-  <div class="flex">
-    <Button type="button" @click="showFileList">
-      <component class="w-4 h-4" :is="props.inputLabel" />
-    </Button>
-    <Text class="ml-2 self-end">{{ fileNames }}</Text>
+  <div>
+    <div class="flex gap-2 items-center">
+      <label v-if="props.label" class="cursor-pointer text-xs" :for="id">{{ props.label }}</label>
+      <div class="flex">
+        <Button :class="'px-1 py-1 w-7 h-7 flex items-center'" type="button" @click="showFileList">
+          <component class="w-5 h-5" :is="props.inputLabel" />
+        </Button>
+      </div>
+    </div>
+    <Text class="self-end" :type="'subtitle'">{{ fileInfoValue }}</Text>
+    <input ref="fileInputEl" class="hidden" v-bind="attrs" type="file" @change="handleChange" />
+    <ul>
+      <li class="text-left list-disc ml-4" v-for="file in fileNames" :key="file">
+        <Text :type="'subtitle'">{{ file }}</Text>
+      </li>
+    </ul>
   </div>
-  <input ref="fileInputEl" class="hidden" v-bind="attrs" type="file" @change="handleChange" />
 </template>
 
 <script lang="ts" setup>
@@ -22,21 +31,26 @@ interface Props extends InputHTMLAttributes {
 }
 
 const fileInputEl: Ref<HTMLInputElement | null> = ref(null)
-const fileNames = ref('')
+const fileInfoValue = ref('')
 const id = v4()
 const props = defineProps<Props>()
 const attrs = useAttrs()
+const fileNames = ref<string[]>([])
 
 const showFileList = () => fileInputEl.value && fileInputEl.value.click()
 
 watch(
   () => props.clean,
-  () => (fileNames.value = '')
+  () => { fileInfoValue.value = '', fileNames.value = [] }
 )
 
 const handleChange = (e: any) => {
   if (e.target && e.target.files) {
-    fileNames.value = `Added ${e.target.files.length} file(s)`
+    fileInfoValue.value = `Added ${e.target.files.length} file(s)`
+
+    for (let i = 0; i < e.target.files.length; i++) {
+      fileNames.value.push(e.target.files[i].name)
+    }
   }
 }
 </script>

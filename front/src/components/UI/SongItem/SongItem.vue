@@ -1,5 +1,5 @@
 <template>
-  <li class="flex justify-between my-1 transition-colors hover:bg-secondary">
+  <li v-if="computedSong" class="flex justify-between my-1 transition-colors hover:bg-secondary">
     <router-link class="flex w-full cursor-pointer" :to="{ name: 'Song', params: { id: computedSong._id } }">
       <img
         v-if="computedSong.imagePath"
@@ -34,14 +34,14 @@
         />
       </div>
       <div v-if="add" :class="buttonClass">
-        <PlusIcon title="Add to playlist" class="pl-2 w-6 h-6" @click="() => handleAdd(computedSong)" />
+        <PlusIcon title="Add to playlist" class="pl-2 w-6 h-6" @click="() => handleAdd(computedSong as SongType)" />
       </div>
     </div>
     <div class="flex items-center">
       <div v-if="edit" :class="buttonClass" title="Edit this song">
         <PencilIcon class="pl-2 w-6 h-6" />
       </div>
-      <div v-if="remove" @click="() => handleRemove(computedSong)" :class="buttonClass" title="Remove this song">
+      <div v-if="remove" @click="() => handleRemove(computedSong as SongType)" :class="buttonClass" title="Remove this song">
         <TrashIcon class="pl-2 w-6 h-6" />
       </div>
     </div>
@@ -87,6 +87,10 @@ const handleAdd = (song: SongType) => {
 const buttonClass = 'flex justify-center  items-center hover:scale-110 cursor-pointer transition-transform'
 
 const computedSong = computed(() => {
+  if (!song) {
+    return null
+  }
+
   return { ...song, time: covertSecondsToTime(song.duration) }
 })
 </script>

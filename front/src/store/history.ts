@@ -18,9 +18,9 @@ interface HistoryState {
 export const useSongHistory = defineStore({
   id: 'history',
   state: () =>
-    ({
-      history: [],
-    } as HistoryState),
+  ({
+    history: [],
+  } as HistoryState),
   actions: {
     addToHitsory(history: HistoryType) {
       this.history = [...this.history, history].sort((a, b) => a.date - b.date)
@@ -47,8 +47,23 @@ export const useSongHistory = defineStore({
       const { fetch } = useFetchMore()
       await fetch(FETCH_NAME_OPTIONS.HISTORY)
     },
+
     reset() {
       this.history = []
     },
+
+    async deleteFromHistory(songId: string): Promise<boolean> {
+      const { callApi } = useAuthFetch()
+      const historyItem = this.history.find((history) => history.song._id === songId)
+      if (!historyItem) return false
+      const res = await callApi<{ success: boolean, message: string }>('DELETE', `/history/${historyItem?._id}`)
+
+      if (!axios.isAxiosError(res) && res.data.success) {
+        this.history = this.history.filter((history) => history._id !== historyItem._id)
+        return true
+      }
+
+      return false
+    }
   },
 })

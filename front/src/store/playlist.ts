@@ -3,13 +3,13 @@ import { defineStore } from 'pinia'
 import useAuthFetch, { ApiResponse } from '../Hooks/useAuthFetch'
 import useFetchMore, { FETCH_NAME_OPTIONS } from '../Hooks/useFetchMore'
 import { SongType } from './songs'
-import { UserType } from './user'
+import { UserTypeWithUnderscoreId } from './user'
 
 export interface Playlist {
   title: string
   songs: SongType[]
   _id: string
-  user: UserType
+  user: UserTypeWithUnderscoreId
   path?: string
 }
 
@@ -29,12 +29,12 @@ interface PlaylistState {
 export const usePlaylist = defineStore({
   id: 'playlist',
   state: () =>
-    ({
-      myPlaylists: [],
-      playlists: [],
-      selectedPlaylistId: '',
-      selectedPlaylist: null,
-    } as PlaylistState),
+  ({
+    myPlaylists: [],
+    playlists: [],
+    selectedPlaylistId: '',
+    selectedPlaylist: null,
+  } as PlaylistState),
   actions: {
     addPlaylists(playlists: Playlist[]) {
       this.playlists = [...this.playlists, ...playlists]

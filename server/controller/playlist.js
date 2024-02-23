@@ -47,7 +47,11 @@ export async function addSongToPlaylist(req, res, next) {
 
     try {
         const isSongInPlaylist = await Playlist.findOne({ _id: id, songs: { '$in': [mongoose.Types.ObjectId(songId)] } })
-        if (isSongInPlaylist) return next(createError({ message: 'Song already exist in this playlist' }, 401))
+        const playlist = await Playlist.findById(id)
+
+        if (isSongInPlaylist) return next(createError({ message: 'Song already exist in this playlist' }, 422))
+        console.log(new ObjectId(req.user.id), playlist.user)
+        if (!playlist.user.equals(new ObjectId(req.user.id))) return next(createError({ message: 'You are not authorized to do this' }, 401))
     } catch (error) {
         next(createError({ message: error.message }))
     }

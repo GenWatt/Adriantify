@@ -33,6 +33,7 @@ const submit = async (data: any) => {
 
   if (!axios.isAxiosError(res)) {
     if (res.data.user) {
+      console.log(res.data.user)
       user.addUser(res.data.user)
       router.push(router.currentRoute.value.redirectedFrom || { name: 'Songs' })
     } else {

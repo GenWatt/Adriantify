@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-primary/70 w-full backdrop-blur-xl">
+  <nav class="bg-primary/70 w-full backdrop-blur-xl pl-2">
     <ul class="flex">
       <NavLink v-for="item in tabs" :key="item.id" :to="item.path">
         <li class="p-4">
@@ -8,7 +8,6 @@
       </NavLink>
     </ul>
     <SearchBar
-      class="pl-2"
       :show-list="true"
       v-if="!router.currentRoute.value.meta.hideBar"
       :search-params="[{ name: 'playlist', value: '1' }]"

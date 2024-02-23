@@ -24,6 +24,7 @@ import { SongType, useSongsData } from '../../store/songs'
 import SongItem from '../UI/SongItem/SongItem.vue'
 import Text from '../UI/Typography/Text.vue'
 import Loader from '../UI/Loader/Loader.vue'
+import { NotificationTypes, useNotification } from '../../store/notification'
 
 const { fetch } = useFetchMore()
 const { callApi } = useAuthFetch()
@@ -31,13 +32,15 @@ const marks = useMarksStore()
 const songsData = useSongsData()
 const songListEl: Ref<HTMLUListElement | null> = ref(null)
 const scroll = useScroll(songListEl)
+const notificationStore = useNotification()
 
 const handleDelete = async (song: SongType) => {
   const res = await callApi<ApiResponse>('DELETE', '/songs/' + song._id)
   if (!axios.isAxiosError(res) && res.data.success) {
     songsData.removeSong(song._id)
+    notificationStore.addQuickNotifaction({ message: 'Song removed', type:  NotificationTypes.SUCCESS })
   } else {
-    console.log(res)
+    notificationStore.addQuickNotifaction({ message: 'Problem with removing song', type: NotificationTypes.ERROR })
   }
 }
 

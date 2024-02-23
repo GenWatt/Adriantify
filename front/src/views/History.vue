@@ -1,9 +1,15 @@
 <template>
-  <Header>History</Header>
+  <Header :class="'mt-2'">History</Header>
   <ul>
-    <SongItem v-for="item in historyData.history" :key="item._id" :song="item.song" />
+    <SongItem 
+      v-for="item in historyData.history" 
+      :key="item._id" 
+      :song="item.song" 
+      :remove="true" 
+      @delete="handleDelete" />
   </ul>
   <Loader v-if="marks.isLoading" />
+  <Text :type="'subtitle'" v-if="!historyData.history.length && !marks.isLoading">You didn't listen any song!</Text>
 </template>
 
 <script setup lang="ts">
@@ -13,16 +19,28 @@ import SongItem from '../components/UI/SongItem/SongItem.vue'
 import { useMarksStore } from '../store/marks'
 import Loader from '../components/UI/Loader/Loader.vue'
 import Header from '../components/UI/Typography/Header.vue'
+import { SongType } from '../store/songs'
+import { NotificationTypes, useNotification } from '../store/notification'
+import Text from '../components/UI/Typography/Text.vue'
 
 const historyData = useSongHistory()
 const marks = useMarksStore()
+const notificationStore = useNotification()
 
-onMounted(() => {
+onMounted(async () => {
   historyData.history = []
-  historyData.fetchHistory()
+  await historyData.fetchHistory()
 })
 
 onUnmounted(() => marks.resetMarks())
+
+const handleDelete = async (song: SongType) => {
+  if(await historyData.deleteFromHistory(song._id)) {
+    notificationStore.addQuickNotifaction({ message: 'Song removed from history', type:  NotificationTypes.SUCCESS })
+  } else {
+    notificationStore.addQuickNotifaction({ message: 'Problem with removing song from history', type: NotificationTypes.ERROR })
+  }
+}
+
 </script>
 
-<style></style>

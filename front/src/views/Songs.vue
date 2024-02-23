@@ -3,6 +3,7 @@
     <SongItem v-for="item in songsData.songs" :key="item._id" :song="item" />
   </ul>
   <Loader v-if="marks.isLoading" />
+  <Text v-if="!songsData.songs.length && !marks.isLoading">No songs found</Text>
 </template>
 
 <script lang="ts" setup>

@@ -1,22 +1,14 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import User from '../views/User.vue'
-import Settings from '../views/Settings.vue'
 import Songs from '../views/Songs.vue'
 import Playlist from '../views/Playlist.vue'
 import History from '../views/History.vue'
 import Song from '../views/Song.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
-import Admin from '../views/Admin.vue'
 import PlaylistItem from '../views/PlaylistItem.vue'
 
 const routes = [
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: Admin,
-    meta: { roles: ['admin'] },
-  },
   {
     path: '/register',
     name: 'Register',

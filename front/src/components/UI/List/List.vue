@@ -7,7 +7,7 @@
       </ul>
     </div>
     <Text class="text-center" v-else>No songs results</Text>
-    <div v-if="props.results.playlists.length">
+    <div class="border-t-2 mt-2" v-if="props.results.playlists.length">
       <Header>Playlists:</Header>
       <PlaylistUl class="h-48 overflow-y-auto">
         <PlaylistItem :playlist="item" v-for="item in props.results.playlists" :key="item._id" :small="true" />

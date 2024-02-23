@@ -1,11 +1,14 @@
 <template>
   <div>
-    <header class="flex justify-between">
-      <Header class="flex"
-        >Playlist:
-        <Text class="ml-1 text-secondary" :type="'title'">{{ playlistData.selectedPlaylist?.title }}</Text></Header
-      >
-      <PlusCircleIcon class="w-5 h-5 cursor-pointer" @click="handleOpen" />
+    <header class="flex justify-between items-center">
+      <Header class="flex">
+        Playlist:
+        <Text class="ml-1 text-secondary" :type="'title'">{{ playlistData.selectedPlaylist?.title }}</Text>
+      </Header>
+      <PlusCircleIcon 
+        v-if="playlistData.selectedPlaylist?.user._id === userData.user.id" 
+        class="w-5 h-5 cursor-pointer" 
+        @click="handleOpen" />
     </header>
     <Text class="'text-secondary'" :type="'subtitle'"
       >{{ playlistData.selectedPlaylist?.songs.length }}
@@ -35,10 +38,12 @@ import Header from '../components/UI/Typography/Header.vue'
 import AddSongToPlaylist from '../components/UI/Modals/AddSongToPlaylist.vue'
 import Text from '../components/UI/Typography/Text.vue'
 import { NotificationTypes, useNotification } from '../store/notification'
+import { useUser } from '../store/user'
 
 const router = useRouter()
 const playlistId = router.currentRoute.value.params.id as string
 const playlistData = usePlaylist()
+const userData = useUser()
 const { callApi } = useAuthFetch()
 const notificationStore = useNotification()
 const isOpen = ref(false)

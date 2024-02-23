@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-1">
+  <section class="mt-1 pb-1">
     <Input placeholder="Search" type="text" :id="id" :name="id" :icon="SearchCircleIcon" @keyup="handleChange" />
     <List @close="handleCloseList" v-if="showList && results && isList" class="rounded" :results="results" />
   </section>

@@ -14,6 +14,10 @@ export interface UserType {
   token: null | string
 }
 
+export interface UserTypeWithUnderscoreId extends UserType {
+  _id: string
+}
+
 export interface RefreshTokenData {
   newToken: string
   user: Omit<UserType, 'token'>
@@ -34,9 +38,9 @@ const initialState: UserType = {
 export const useUser = defineStore({
   id: 'user',
   state: () =>
-    ({
-      user: initialState,
-    } as UserState),
+  ({
+    user: initialState,
+  } as UserState),
   actions: {
     isAuth() {
       return this.user.id && this.user.token
