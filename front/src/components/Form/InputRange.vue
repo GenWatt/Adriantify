@@ -1,56 +1,105 @@
 <template>
-  <input id="input-range" type="range" />
+    <div class="relative w-8/12">
+      <div
+        @click="handleDragEnd"
+        ref="fullPathEl"
+        class="top-1/2 absolute w-full bg-secondary/40 h-1 cursor-pointer -translate-y-1/2"
+      ></div>
+      <div ref="pathEl" @click="handleDragEnd" class="top-1/2 absolute bg-secondary h-1 -translate-y-1/2 cursor-pointer"></div>
+      <span
+        ref="zip"
+        @dragend="handleDragEnd"
+        @drag="handleDrag"
+        @touchend="handleDragEnd"
+        @touchmove="handleDrag"
+        draggable="true"
+        style="font-size: 11.5px; font-weight: bolder;"
+        class="top-1/2 -translate-y-1/2 flex items-center justify-center -translate-x-1/2 absolute w-5 h-5 bg-secondary rounded-full cursor-grab hover:bg-secondary/80"
+      >
+        <p v-if="props.showZipValue">{{ props.value.toFixed(1) }}</p>
+      </span>
+    </div>
 </template>
 
+<script setup lang="ts">
+import { Ref, defineProps, onMounted, ref, watch } from 'vue'
+import useConverter from '../../Hooks/useCoverter'
+import useBounding from '../../Hooks/useBounding'
+
+type InputRangeProps = {
+  value: number
+  min: number
+  max: number
+  showZipValue?: boolean
+}
+
+type InputRangeEmits = {
+  (e: 'change', value: number): void
+}
+
+const props = defineProps<InputRangeProps>()
+const emits = defineEmits<InputRangeEmits>()
+
+const { getPercentageFromValues, clamp } = useConverter()
+const fullPathEl: Ref<HTMLElement | null> = ref(null)
+const pathEl: Ref<HTMLElement | null> = ref(null)
+const zip: Ref<HTMLElement | null> = ref(null)
+const fullPathCoords = useBounding()
+let isDrag = false
+
+onMounted(() => {
+  if (fullPathEl.value) fullPathCoords.setup(fullPathEl.value)
+})
+
+const handleDragEnd = (e: any) => {
+  const eventX = e.changedTouches && e.changedTouches.length ? e.changedTouches[0].pageX : e.x
+  const pathWidth = fullPathCoords.getCoords().width
+  const newX = eventX - fullPathCoords.getCoords().x
+  const percentValue = getPercentageFromValues(newX, pathWidth)
+  const newValue = props.max * (percentValue / 100)
+  const clampNewValue = clamp(newValue, props.min, props.max)
+
+  updateSlider(clampNewValue)
+  emits('change', clampNewValue)
+  isDrag = false
+}
+
+const handleDrag = (e: any) => {
+  const eventX = e.changedTouches && e.changedTouches.length ? e.changedTouches[0].pageX : e.x
+  const path = fullPathCoords.getCoords()
+  const newX = eventX - path.x
+  const newValue = props.max * (getPercentageFromValues(newX, path.width) / 100)
+  const clampNewValue = clamp(newValue, props.min, props.max)
+
+  updateSlider(clampNewValue)
+  isDrag = true
+}
+
+const updateSlider = (newValue: number) => {
+  const percent = getPercentageFromValues(newValue, props.max)
+
+  updateTrackValue(percent)
+  updateIndicator(percent)
+}
+
+const updateTrackValue = (percent: number) => {
+  if (pathEl.value) {
+    pathEl.value.style.width = `${percent}%`
+  }
+}
+
+const updateIndicator = (percent: number) => {
+  if (zip.value) {
+    zip.value.style.left = `${percent}%`
+  }
+}
+
+watch(() => props.value, (value) => {
+    if (isDrag) return
+    updateSlider(value)
+})
+
+</script>
+
 <style scoped>
-#input-range {
-  -webkit-appearance: none;
-  background-color: transparent;
-}
-
-#input-range:focus {
-  outline: none;
-}
-
-#input-range::-ms-track {
-  width: 100%;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-
-#input-range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 0.9rem;
-  width: 0.9rem;
-  border-radius: 50%;
-  background-color: #15b7b9;
-  cursor: pointer;
-  margin-top: -0.45rem;
-}
-
-#input-range::-moz-range-thumb {
-  height: 0.9rem;
-  width: 0.9rem;
-  border-radius: 50%;
-  background-color: #15b7b9;
-  cursor: pointer;
-}
-
-#input-range::-webkit-slider-runnable-track {
-  height: 0.2rem;
-  cursor: pointer;
-  background-color: #15b7b9;
-  border-radius: 0.3rem;
-  border: 0.2rem solid #299293;
-}
-
-#input-range::-moz-range-track {
-  height: 0.2rem;
-  cursor: pointer;
-  background-color: #15b7b9;
-  border-radius: 0.3rem;
-  border: 0.1rem solid #299293;
-}
 </style>

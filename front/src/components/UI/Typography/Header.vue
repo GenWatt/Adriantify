@@ -21,7 +21,7 @@ const container: Ref<HTMLElement | null> = ref(null)
 const { isOverflowing } = useBounding()
 
 onMounted(() => {
-  if (header.value && container.value && isOverflowing(header as Ref<HTMLElement>))
+  if (header.value && container.value && props.slide && isOverflowing(header as Ref<HTMLElement>))
     container.value.classList.add('slide')
 })
 

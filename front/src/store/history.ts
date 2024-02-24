@@ -64,6 +64,18 @@ export const useSongHistory = defineStore({
       }
 
       return false
+    },
+
+    async deleteAllHistory(): Promise<boolean> {
+      const { callApi } = useAuthFetch()
+      const res = await callApi<{ success: boolean, message: string }>('DELETE', '/history')
+
+      if (!axios.isAxiosError(res) && res.data.success) {
+        this.history = []
+        return true
+      }
+
+      return false
     }
   },
 })

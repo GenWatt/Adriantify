@@ -1,5 +1,8 @@
 <template>
-  <Header :class="'mt-2'">History</Header>
+  <div class="flex justify-between mt-2">
+    <Header>History</Header>
+    <Button @click="HandleDeleteHistory">Clear history</Button>
+  </div>
   <ul>
     <SongItem 
       v-for="item in historyData.history" 
@@ -22,6 +25,7 @@ import Header from '../components/UI/Typography/Header.vue'
 import { SongType } from '../store/songs'
 import { NotificationTypes, useNotification } from '../store/notification'
 import Text from '../components/UI/Typography/Text.vue'
+import Button from '../components/UI/Buttons/Button.vue'
 
 const historyData = useSongHistory()
 const marks = useMarksStore()
@@ -39,6 +43,14 @@ const handleDelete = async (song: SongType) => {
     notificationStore.addQuickNotifaction({ message: 'Song removed from history', type:  NotificationTypes.SUCCESS })
   } else {
     notificationStore.addQuickNotifaction({ message: 'Problem with removing song from history', type: NotificationTypes.ERROR })
+  }
+}
+
+const HandleDeleteHistory = async () => {
+  if(await historyData.deleteAllHistory()) {
+    notificationStore.addQuickNotifaction({ message: 'History cleared', type:  NotificationTypes.SUCCESS })
+  } else {
+    notificationStore.addQuickNotifaction({ message: 'Problem with clearing history', type: NotificationTypes.ERROR })
   }
 }
 

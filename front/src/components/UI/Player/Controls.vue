@@ -1,19 +1,18 @@
 <template>
-  <div class="flex w-8/12">
-    <InputRange
-      class="md:w-2/12 md:block hidden"
-      v-if="props.volume"
-      @change="changeVolume"
-      ref="volumeEl"
-      type="range"
-      min="0"
-      max="1"
-      step="0.01"
-    />
-    <div class="flex justify-between w-full h-8">
+  <div :class="`flex ${$props.className}`">
+    <div class="flex justify-between h-8 w-full">
+      <InputRange
+        v-if="props.volume"
+        @change="changeVolume"
+        :value="volumeValue"
+        :min=0
+        :max=1
+        :show-zip-value="true"
+        title="Volume"
+      />
       <RewindIcon
         :class="!songData.isPrevSong && 'opacity-70'"
-        class="cursor-pointer w-4/12"
+        class="cursor-pointer w-4/12 ml-3"
         title="Rewind"
         @click="prev"
       />
@@ -34,17 +33,17 @@ import { PlayIcon } from '@heroicons/vue/outline'
 import { PauseIcon } from '@heroicons/vue/outline'
 import { FastForwardIcon } from '@heroicons/vue/outline'
 import { RewindIcon } from '@heroicons/vue/outline'
-import { onMounted, ref, Ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import useAudio from '../../../Hooks/useAudio'
 import { useSongsData } from '../../../store/songs'
 import InputRange from '../../Form/InputRange.vue'
 
-type Props = { changeRoute?: boolean; audio?: HTMLAudioElement; volume?: boolean }
+type Props = { changeRoute?: boolean; audio?: HTMLAudioElement; volume?: boolean, className?: string }
 
 const songData = useSongsData()
 const { prevSong, nextSong, changeRoute } = useAudio()
 const props = defineProps<Props>()
-const volumeEl: Ref<HTMLInputElement | null> = ref(null)
+const volumeValue = ref(0)
 
 const prev = () => {
   prevSong()
@@ -60,11 +59,13 @@ const next = () => {
   }
 }
 
-onMounted(() => volumeEl.value && props.audio && (volumeEl.value.value = props.audio.volume.toString()))
+onMounted(() => props.audio && (volumeValue.value = props.audio.volume))
 
-const changeVolume = (e: any) => {
-  if (props.audio) props.audio.volume = e.target.value
+const changeVolume = (newValue: number) => {
+  if (props.audio) props.audio.volume = newValue
+  volumeValue.value = newValue
 }
+
 </script>
 
 <style></style>

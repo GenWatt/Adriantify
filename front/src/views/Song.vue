@@ -49,7 +49,6 @@ watch(
   () => songsData.currentSong,
   async (curr) => {
     if (curr && curr._id) {
-      console.log('post to history')
       historyData.postToHistory(curr._id)
     }
   }

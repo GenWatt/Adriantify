@@ -4,13 +4,15 @@
 
 ## Run app
 
-### To run the server you need to go to [./server](server/) and run `npm start` command
-
-### To run client you need to go to [./client](front/) and run `npm run dev` then go to localhost
-
 ### On server create .env file and fill it [.env.sample](server/.env.sample) file should help you
 
 ### If you are using other port than 3000 for front app then you should change origin in [config.js](server/config.js) to avoid cross origin problems
+
+### To create admin account you need to make a POST call `/register/admin`
+
+### To run the server you need to go to [./server](server/) and run `npm start` command
+
+### To run client you need to go to [./client](front/) and run `npm run dev` then go to localhost
 
 ## Overview
 
@@ -18,6 +20,7 @@
 
     * node, express
     * mongoose for MongoDb connection
+    * JWT with refresh token for authentication
 
 2. Client technology
 

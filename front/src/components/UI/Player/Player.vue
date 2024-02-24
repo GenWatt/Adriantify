@@ -1,6 +1,6 @@
 <template>
   <Timeline :audio="props.audio" :change-route="true" />
-  <Controls :audio="props.audio" :volume="true" :change-route="true" />
+  <Controls className="w-8/12 mt-2" :audio="props.audio" :volume="true" :change-route="true" />
 </template>
 
 <script lang="ts" setup>

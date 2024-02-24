@@ -49,3 +49,12 @@ export async function deleteHistory(req, res, next) {
         }
     } else next(createError({ data: { message: 'Wrong history id' } }, 422))
 }
+
+export async function deleteAllHistory(req, res, next) {
+    try {
+        await History.deleteMany({ user: req.user.id })
+        res.send({ message: 'All history deleted', success: true })
+    } catch (error) {
+        next(createError({ data: { message: error.message } }))
+    }
+}
