@@ -1,4 +1,5 @@
 import Songs from "../models/Songs.js"
+import History from "../models/History.js"
 import multer from "multer"
 import addFileToFolder from "../utils/addFileToFolder.js"
 import path from "path"
@@ -10,12 +11,13 @@ import Playlist from "../models/Playlist.js"
 import mongoose from "mongoose"
 import { IMAGE_FOLDER, SONGS_FOLDER } from "../router/songs.js"
 import { createSongObj } from "../utils/creators.js"
+import { db } from "../db/mongodb.js"
 
 const ObjectId = mongoose.Types.ObjectId
 const songsStorage = multer.diskStorage({
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, uniqueSuffix + '-' + file.originalname)
+        cb(null, uniqueSuffix + '.' + file.mimetype.split('/')[1])
     },
     destination: (req, file, cb) => {
         if (file.fieldname === 'songImage' && file.mimetype.startsWith('image')) {
@@ -46,20 +48,41 @@ export async function getSong(req, res, next) {
 
 export async function deleteSong(req, res, next) {
     const { id } = req.params
+    let session;
 
-    if (ObjectId.isValid(id)) {
-        Songs.findOne({ _id: id }).then((song) => {
+    try {
+        session = await db.startSession()
+
+        if (ObjectId.isValid(id)) {
+            const song = await Songs.findOne({ _id: id })
+    
             if (!song) return next({ code: 400, data: { message: 'Song dosent exist' }, success: false })
-            Songs.deleteOne({ _id: id })
-                .then(() => {
-                    typeof song.songPath === 'string' && existsAndRemove(path.join('public', song.songPath))
-                    typeof song.imagePath === 'string' && existsAndRemove(path.join('public', song.imagePath))
-                    res.send({ message: 'Song ' + song.title + ' Succesfully deleted', success: true })
-                })
-                .catch((err) => next({ code: 500, data: { message: err.message } }))
-        }).catch((err) => next({ code: 500, data: { message: err.message } }))
-    } else {
-        next({ code: 400, data: { message: 'Wrong id', is } })
+            
+            session.startTransaction()
+            await Playlist.updateMany({ songs: song._id }, { $pull: { songs: song._id } }, { session })
+            await History.deleteMany({ song: song._id }, { session })
+            await Songs.deleteOne({ _id: id }, { session })
+            
+            await session.commitTransaction()
+            session.endSession()
+
+            typeof song.songPath === 'string' && existsAndRemove(path.join('public', song.songPath))
+            typeof song.imagePath === 'string' && existsAndRemove(path.join('public', song.imagePath))
+            console.log('song', song)
+            res.send({ message: 'Song ' + song.title + ' Succesfully deleted', success: true })
+        } else {
+            next({ code: 400, data: { message: 'Wrong id' } })
+            if (session) {
+                await session.abortTransaction()
+                session.endSession()
+            }   
+        }
+    } catch (error) {
+        if (session) {
+            await session.abortTransaction()
+            session.endSession()
+        }
+        next(createError({ message: error.message }))    
     }
 }
 

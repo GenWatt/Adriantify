@@ -3,7 +3,7 @@
     <div class="flex gap-2 items-center">
       <label v-if="props.label" class="cursor-pointer text-xs" :for="id">{{ props.label }}</label>
       <div class="flex">
-        <Button :class="'px-1 py-1 w-7 h-7 flex items-center'" type="button" @click="showFileList">
+        <Button :class="'w-7 h-7 flex items-center'" type="button" @click="showFileList">
           <component class="w-5 h-5" :is="props.inputLabel" />
         </Button>
       </div>

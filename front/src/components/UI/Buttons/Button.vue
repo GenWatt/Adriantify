@@ -1,7 +1,7 @@
 <template>
   <button
     :class="`${props.class || ''} ${props.color ? props.color : 'bg-secondary'}`"
-    class="text-white hover:bg-secondary/80 font-medium rounded-lg text-sm px-3 py-2 focus:outline-none"
+    class="text-white hover:bg-secondary/80 font-medium rounded-lg text-sm px-2 py-1 focus:outline-none"
   >
     <slot />
   </button>

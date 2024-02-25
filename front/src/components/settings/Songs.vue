@@ -1,6 +1,6 @@
 <template>
   <Loader v-if="marks.isLoading" />
-  <ul ref="songListEl" class="h-80 overflow-y-auto overflow-x-hidden hide-scrollbar">
+  <ul v-if="songsData.songs.length" ref="songListEl" class="h-80 overflow-y-auto overflow-x-hidden hide-scrollbar">
     <SongItem
       v-for="item in songsData.songs"
       :key="item._id"
