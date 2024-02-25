@@ -1,13 +1,13 @@
 <template>
-  <li v-if="computedSong" class="flex justify-between my-1 transition-colors hover:bg-secondary">
+  <li v-if="computedSong" class="rounded-lg  flex justify-between my-1 transition-colors hover:bg-secondary">
     <router-link class="flex w-full cursor-pointer" :to="{ name: 'Song', params: { id: computedSong._id } }">
       <img
         v-if="computedSong.imagePath"
-        class="w-12 h-12"
+        class="rounded-lg w-12 h-12"
         :src="`${SERVER_URL}/api${computedSong.imagePath}`"
         :alt="computedSong.title"
       />
-      <img v-else class="w-12 h-12" src="../../../assets/Nutka.webp" :alt="computedSong.title" />
+      <img v-else class="rounded-lg w-12 h-12" src="../../../assets/Nutka.webp" :alt="computedSong.title" />
       <div class="ml-2 grow">
         <Text :type="'title'">{{ computedSong.title }}</Text>
         <Text :type="'subtitle'">{{ computedSong.creator }}</Text>

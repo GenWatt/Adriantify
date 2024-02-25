@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref, onMounted, onUpdated } from 'vue'
+import { Ref, ref, onMounted, onUpdated, onUnmounted } from 'vue'
 import { computed } from 'vue-demi'
 import useBounding from '../../../Hooks/useBounding'
 
@@ -32,6 +32,11 @@ onUpdated(() => {
 
 onMounted(() => {
   setSlide()
+  window.addEventListener('resize', setSlide)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', setSlide)
 })
 
 const className2 = computed(() => {

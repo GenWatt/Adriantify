@@ -9,7 +9,7 @@
         v-bind="attrs"
         :placeholder="props.placeholder"
         :class="props.icon ? 'pl-7' : 'pl-2'"
-        class="w-full shadow bg-secondary appearance-none border rounded py-2 border-secondary pr-2 leading-tight focus:outline-none focus:shadow-outline"
+        class="w-full shadow bg-secondary appearance-none border rounded-lg py-2 border-secondary pr-2 leading-tight focus:outline-none focus:shadow-outline"
       />
     </div>
   </label>

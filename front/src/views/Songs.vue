@@ -12,6 +12,7 @@ import SongItem from '../components/UI/SongItem/SongItem.vue'
 import { useSongsData } from '../store/songs'
 import Loader from '../components/UI/Loader/Loader.vue'
 import { useMarksStore } from '../store/marks'
+import Text from "../components/UI/Typography/Text.vue";
 
 const songsData = useSongsData()
 const marks = useMarksStore()

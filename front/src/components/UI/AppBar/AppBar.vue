@@ -11,11 +11,13 @@
     </div>
     <nav>
       <ul class="flex items-center">
-        <router-link v-for="(item, index) in navConfigRef" :key="item.path" :to="item.path">
-          <li :class="index + 1 === navConfigRef.length ? '' : 'mr-4'">
-            <component :is="item.icon" class="w-5 h-5" />
-          </li>
-        </router-link>
+        <Tooltip :message="`Hi ${userData.user.username}`">
+          <router-link v-for="(item, index) in navConfigRef" :key="item.path" :to="item.path">
+            <li :class="index + 1 === navConfigRef.length ? '' : 'mr-4'">
+              <component :is="item.icon" class="w-5 h-5" />
+            </li>
+          </router-link>
+        </Tooltip>
       </ul>
     </nav>
   </div>
@@ -25,10 +27,13 @@
 import { UserCircleIcon } from '@heroicons/vue/outline'
 import { NavConfig } from './types'
 import { ref, Ref } from 'vue'
+import Tooltip from '../Tooltip/Tooltip.vue'
+import { useUser } from '../../../store/user'
 
 const navConfig: NavConfig[] = [{ name: 'User', icon: UserCircleIcon, path: '/user' }]
 
 const navConfigRef: Ref<NavConfig[]> = ref(navConfig)
+const userData = useUser()
 </script>
 
 <style>

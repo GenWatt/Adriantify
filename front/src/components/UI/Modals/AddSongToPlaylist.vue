@@ -59,7 +59,10 @@ const handleClose = () => emits('close')
 
 const handleLoading = (isLoadingState: boolean) => (isLoading.value = isLoadingState)
 
-const handleResults = (data: PlaylistsAndSongs) => (songs.value = data.songs)
+const handleResults = (data: PlaylistsAndSongs) => {
+  if (!data) return
+  songs.value = data.songs
+}
 
 const handleAddToPlaylist = async (song: SongType) => {
   if (!playlistData.selectedPlaylist) return

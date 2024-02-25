@@ -1,13 +1,13 @@
 <template>
-  <li class="hover:bg-secondary transition-colors rounded">
+  <li class="hover:bg-secondary transition-colors rounded-lg ">
     <router-link :to="{ name: 'PlaylistItem', params: { id: props.playlist._id } }">
       <img
         v-if="props.playlist.path"
         :class="props.small ? 'h-32' : 'h-48'"
-        class="w-full"
+        class="w-full rounded-lg"
         :src="getFileUrl(props.playlist.path)"
       />
-      <img v-else class="w-full" src="../../../assets/Nutka.webp" />
+      <img v-else class="w-full rounded-lg" src="../../../assets/Nutka.webp" />
     </router-link>
     <div class="flex flex-col">
       <Header :slide="true" class="whitespace-nowrap">{{ props.playlist.title }}</Header>

@@ -1,7 +1,7 @@
 export default function useDebounce() {
-  const debounce = (cb: () => void, timeout: number) => {
-    let timer: NodeJS.Timeout | null = null
+  let timer: NodeJS.Timeout | null = null
 
+  const debounce = (cb: () => void, timeout: number) => {
     if (timer) {
       clearTimeout(timer)
       timer = null

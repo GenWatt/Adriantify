@@ -1,11 +1,14 @@
 <template>
   <div class="flex justify-center w-full items-center">
     <Text class="mr-2" :type="'subtitle'">{{ covertSecondsToTime(currentTime) }}</Text>
-    <InputRange 
-      :max="duration" 
-      :min="0" 
-      :value="currentTime" 
-      @change="handleChange" />
+    <Tooltip class="w-8/12" :message="`${songData.currentSong?.title} by ${songData.currentSong?.creator}: ${covertSecondsToTime(currentTime)} `">
+      <InputRange 
+        :max="duration" 
+        :min="0" 
+        :value="currentTime" 
+        @change="handleChange"
+        class="w-full" />
+    </Tooltip>
     <Text class="ml-2" :type="'subtitle'">{{ covertSecondsToTime(duration) }}</Text>
   </div>
 </template>
@@ -17,6 +20,7 @@ import useConverter from '../../../Hooks/useCoverter'
 import { useSongsData } from '../../../store/songs'
 import Text from '../Typography/Text.vue'
 import InputRange from '../../Form/InputRange.vue'
+import Tooltip from '../Tooltip/Tooltip.vue'
 
 type Props = { changeRoute?: boolean; audio: HTMLAudioElement }
 

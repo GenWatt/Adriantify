@@ -40,6 +40,15 @@ watch(
   }
 )
 
+watch(
+  () => songsData.currentSong,
+  async (curr) => {
+    if (curr && curr._id) {
+      history.postToHistory(curr._id)
+    }
+  }
+)
+
 const setContainerHeight = () => {
   if (container.value) {
     const miniPlayerElement = document.getElementById('miniPlayer')
@@ -74,9 +83,13 @@ onMounted(() => {
   setContainerHeight()
   songsData.miniPlayerSetup()
   container.value?.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', setContainerHeight)
 })
 
-onUnmounted(() => container.value?.removeEventListener('scroll', handleScroll))
+onUnmounted(() => {
+  container.value?.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', setContainerHeight)
+})
 </script>
 
 <template>

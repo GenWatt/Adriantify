@@ -1,5 +1,5 @@
 <template>
-    <div class="relative w-8/12">
+    <div class="relative">
       <div
         @click="handleDragEnd"
         ref="fullPathEl"
@@ -13,10 +13,8 @@
         @touchend="handleDragEnd"
         @touchmove="handleDrag"
         draggable="true"
-        style="font-size: 11.5px; font-weight: bolder;"
-        class="top-1/2 -translate-y-1/2 flex items-center justify-center -translate-x-1/2 absolute w-5 h-5 bg-secondary rounded-full cursor-grab hover:bg-secondary/80"
+        class="top-1/2 -translate-y-1/2 -translate-x-1/2 absolute w-3 h-3 bg-secondary rounded-full cursor-grab hover:bg-secondary/80"
       >
-        <p v-if="props.showZipValue">{{ props.value.toFixed(1) }}</p>
       </span>
     </div>
 </template>

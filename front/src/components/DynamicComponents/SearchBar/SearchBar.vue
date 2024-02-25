@@ -28,7 +28,7 @@ interface Emits {
   (e: 'loading', isLoading: boolean): void
 }
 
-const DEBOUNCE_TIME = 100
+const DEBOUNCE_TIME = 500
 
 const { debounce } = useDebounce()
 const { callApi } = useAuthFetch()
@@ -45,6 +45,7 @@ const id = v4()
 const handleCloseList = () => (isList.value = false)
 
 const getSearchList = async () => {
+  console.log('searchList')
   const params = [{ name: 'text', value: searchText.value }].concat(searchParams || [])
   if (searchText.value) {
     emits('loading', true)
