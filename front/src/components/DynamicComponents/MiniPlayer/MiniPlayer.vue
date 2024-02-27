@@ -2,19 +2,15 @@
   <section
     id="miniPlayer"
     v-if="songData.currentSong"
-    class="flex sm:flex-row flex-col justify-between bg-secondary-dark items-center w-screen relative"
+    class="flex sm:flex-row flex-col justify-between bg-secondary-dark items-center w-screen relative p-2"
   >
     <div class="flex items-center sm:w-4/12 w-full overflow-hidden">
       <img
-        class="rounded-lg sm:w-3/12 w-10 h-10"
+        class="rounded-lg w-10 h-10"
         v-if="songData.currentSong.imagePath"
         :src="url.getFileUrl(songData.currentSong?.imagePath)"
       />
-      <img
-        class="rounded-lg sm:w-3/12 w-10 h-10"
-        v-else
-        src="../../../assets/Nutka.webp"
-      />
+      <img class="rounded-lg w-10 h-10" v-else src="../../../assets/Nutka.webp" />
       <div class="pl-2 w-9/12">
         <Text :slide="true" className="whitespace-nowrap">{{
           songData.currentSong.title

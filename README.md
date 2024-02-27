@@ -10,9 +10,9 @@
 
 ### To create admin account you need to make a POST call `/register/admin`
 
-### To run the server you need to go to [./server](server/) and run `npm start` command
+### To run the server you need to go to [./server](server/), install libs `npm install` and run `npm start` command
 
-### To run client you need to go to [./client](front/) and run `npm run dev` then go to localhost
+### To run client you need to go to [./client](front/), install libs `npm install` and run `npm run dev` then go to localhost
 
 ## Overview
 
